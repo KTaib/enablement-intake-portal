@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acquia Enablement — Submit a Request</title>
+<style>
+  :root {
+    --acquia-blue: #0073e6;
+    --acquia-dark: #0a1929;
+    --surface: #ffffff;
+    --surface-2: #f5f7fa;
+    --border: #e2e8f0;
+    --text-primary: #0f1923;
+    --text-secondary: #4a5568;
+    --text-muted: #718096;
+    --red: #e53e3e;
+    --orange: #dd6b20;
+    --yellow: #d69e2e;
+    --green: #38a169;
+    --radius: 10px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--surface-2); color: var(--text-primary); line-height: 1.6; }
+
+  /* ── Layout ── */
+  .page-wrap { max-width: 760px; margin: 0 auto; padding: 0 20px 60px; }
+  .page-header { padding: 32px 0 24px; border-bottom: 1px solid var(--border); margin-bottom: 32px; }
+  .page-header .logo { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .logo-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--acquia-blue); }
+  .logo-text { font-size: 13px; font-weight: 600; color: var(--acquia-blue); letter-spacing: 0.05em; text-transform: uppercase; }
+  .page-header h1 { font-size: 26px; font-weight: 700; color: var(--acquia-dark); letter-spacing: -0.3px; }
+  .page-header p { font-size: 15px; color: var(--text-secondary); margin-top: 6px; }
+
+  /* ── Team selector ── */
+  .team-selector { margin-bottom: 32px; }
+  .team-selector label { font-size: 13px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; display: block; margin-bottom: 10px; }
+  .team-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .team-pill { padding: 8px 18px; border: 1.5px solid var(--border); border-radius: 100px; font-size: 14px; font-weight: 500; cursor: pointer; background: var(--surface); color: var(--text-secondary); transition: all 0.15s; user-select: none; }
+  .team-pill:hover { border-color: var(--acquia-blue); color: var(--acquia-blue); }
+  .team-pill.active { background: var(--acquia-blue); border-color: var(--acquia-blue); color: white; }
+
+  /* ── Team banner ── */
+  .team-banner { background: #ebf5ff; border: 1px solid #bee3f8; border-radius: var(--radius); padding: 12px 16px; margin-bottom: 24px; font-size: 14px; color: #2b6cb0; display: none; }
+  .team-banner.visible { display: block; }
+  .team-banner strong { display: block; margin-bottom: 2px; }
+
+  /* ── Form card ── */
+  .form-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+  .form-card-header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+  .form-card-header h2 { font-size: 16px; font-weight: 600; color: var(--acquia-dark); }
+  .form-card-header p { font-size: 13px; color: var(--text-muted); margin-top: 3px; }
+  .form-body { padding: 24px; }
+
+  /* ── Form fields ── */
+  .field { margin-bottom: 22px; }
+  .field:last-child { margin-bottom: 0; }
+  .field label { font-size: 14px; font-weight: 600; color: var(--text-primary); display: block; margin-bottom: 6px; }
+  .field label .required { color: var(--red); margin-left: 3px; }
+  .field .hint { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
+  .field input[type="text"],
+  .field input[type="email"],
+  .field select,
+  .field textarea {
+    width: 100%; padding: 10px 12px; border: 1.5px solid var(--border); border-radius: 8px;
+    font-size: 15px; color: var(--text-primary); background: var(--surface);
+    transition: border-color 0.15s; outline: none; font-family: inherit;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--acquia-blue); box-shadow: 0 0 0 3px rgba(0,115,230,0.1); }
+  .field textarea { resize: vertical; min-height: 100px; }
+  .field select { cursor: pointer; }
+
+  /* ── Request type cards ── */
+  .type-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  @media (max-width: 520px) { .type-cards { grid-template-columns: 1fr; } }
+  .type-card { border: 1.5px solid var(--border); border-radius: 8px; padding: 14px 14px 12px; cursor: pointer; transition: all 0.15s; background: var(--surface); }
+  .type-card:hover { border-color: var(--acquia-blue); }
+  .type-card.selected { border-color: var(--acquia-blue); background: #f0f7ff; }
+  .type-card .tc-icon { font-size: 20px; margin-bottom: 6px; }
+  .type-card .tc-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .type-card .tc-desc { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+
+  /* ── Urgency ── */
+  .urgency-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .urgency-opt { border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 12px; cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 8px; }
+  .urgency-opt:hover { border-color: #ccc; }
+  .urgency-opt.selected { border-color: var(--acquia-blue); background: #f0f7ff; }
+  .urgency-opt .u-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .urgency-opt .u-label { font-size: 14px; font-weight: 500; color: var(--text-primary); }
+  .urgency-opt .u-sub { font-size: 12px; color: var(--text-muted); }
+
+  /* ── Submit area ── */
+  .submit-area { margin-top: 28px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .btn-submit { background: var(--acquia-blue); color: white; border: none; border-radius: 8px; padding: 12px 28px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.15s; letter-spacing: -0.1px; }
+  .btn-submit:hover { background: #0062cc; }
+  .btn-submit:disabled { background: #a0aec0; cursor: not-allowed; }
+  .submit-note { font-size: 13px; color: var(--text-muted); }
+
+  /* ── Success state ── */
+  .success-card { background: var(--surface); border: 1px solid #9ae6b4; border-radius: var(--radius); box-shadow: var(--shadow); padding: 40px; text-align: center; display: none; }
+  .success-card.visible { display: block; }
+  .success-icon { font-size: 40px; margin-bottom: 16px; }
+  .success-card h2 { font-size: 22px; font-weight: 700; color: var(--acquia-dark); margin-bottom: 8px; }
+  .success-card .intake-id { display: inline-block; background: #f0f7ff; border: 1px solid #bee3f8; border-radius: 6px; padding: 6px 16px; font-size: 15px; font-weight: 600; color: var(--acquia-blue); margin: 10px 0 16px; letter-spacing: 0.05em; }
+  .success-card p { font-size: 15px; color: var(--text-secondary); max-width: 420px; margin: 0 auto 20px; }
+  .btn-new { background: transparent; border: 1.5px solid var(--acquia-blue); color: var(--acquia-blue); border-radius: 8px; padding: 10px 24px; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .btn-new:hover { background: #f0f7ff; }
+
+  /* ── Status tracker ── */
+  .tracker-section { margin-top: 40px; }
+  .tracker-section h2 { font-size: 16px; font-weight: 700; color: var(--acquia-dark); margin-bottom: 16px; }
+  .tracker-lookup { display: flex; gap: 8px; margin-bottom: 20px; }
+  .tracker-lookup input { flex: 1; padding: 10px 12px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 14px; outline: none; }
+  .tracker-lookup input:focus { border-color: var(--acquia-blue); }
+  .btn-lookup { background: var(--acquia-dark); color: white; border: none; border-radius: 8px; padding: 10px 20px; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+  .tracker-result { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; display: none; }
+  .tracker-result.visible { display: block; }
+  .tr-header { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .tr-id { font-size: 14px; font-weight: 700; color: var(--acquia-blue); }
+  .tr-title { font-size: 14px; color: var(--text-secondary); }
+  .status-badge { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+  .status-new         { background: #e9ecef; color: #4a5568; }
+  .status-in-review   { background: #fff3cd; color: #856404; }
+  .status-accepted    { background: #d1ecf1; color: #0c5460; }
+  .status-in-progress { background: #cce5ff; color: #004085; }
+  .status-done        { background: #d4edda; color: #155724; }
+  .status-cancelled   { background: #f8d7da; color: #721c24; }
+  .tr-timeline { padding: 16px 18px; }
+  .tl-step { display: flex; gap: 12px; margin-bottom: 14px; }
+  .tl-step:last-child { margin-bottom: 0; }
+  .tl-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+  .tl-dot.done  { background: var(--green); }
+  .tl-dot.current { background: var(--acquia-blue); }
+  .tl-dot.future { background: var(--border); }
+  .tl-label { font-size: 14px; font-weight: 500; color: var(--text-primary); }
+  .tl-date { font-size: 12px; color: var(--text-muted); }
+
+  /* ── Error ── */
+  .field-error { font-size: 13px; color: var(--red); margin-top: 5px; display: none; }
+  .field.has-error input, .field.has-error textarea, .field.has-error select { border-color: var(--red); }
+  .field.has-error .field-error { display: block; }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <div class="page-header">
+    <div class="logo"><div class="logo-dot"></div><span class="logo-text">Acquia Sales Enablement</span></div>
+    <h1>Submit an enablement request</h1>
+    <p>Tell us what you need. Pre-filled for your team so it takes under 2 minutes.</p>
+  </div>
+
+  <!-- TEAM SELECTOR -->
+  <div class="team-selector">
+    <label>Which team are you on?</label>
+    <div class="team-pills">
+      <div class="team-pill" data-team="Sales" onclick="selectTeam('Sales')">Sales</div>
+      <div class="team-pill" data-team="CS" onclick="selectTeam('CS')">Customer Success</div>
+      <div class="team-pill" data-team="Marketing" onclick="selectTeam('Marketing')">Marketing</div>
+      <div class="team-pill" data-team="Product" onclick="selectTeam('Product')">Product</div>
+      <div class="team-pill" data-team="Other" onclick="selectTeam('Other')">Other</div>
+    </div>
+  </div>
+
+  <!-- TEAM BANNER -->
+  <div class="team-banner" id="teamBanner">
+    <strong id="teamBannerTitle"></strong>
+    <span id="teamBannerDesc"></span>
+  </div>
+
+  <!-- MAIN FORM -->
+  <div class="form-card" id="formCard">
+    <div class="form-card-header">
+      <h2>Request details</h2>
+      <p>All fields marked * are required. We will follow up on anything unclear.</p>
+    </div>
+    <div class="form-body">
+
+      <!-- Requestor -->
+      <div class="field" id="field-email">
+        <label>Your work email <span class="required">*</span></label>
+        <input type="email" id="input-email" placeholder="you@acquia.com">
+        <div class="field-error">Please enter a valid email address.</div>
+      </div>
+
+      <!-- Request type -->
+      <div class="field" id="field-type">
+        <label>What type of request is this? <span class="required">*</span></label>
+        <div class="hint">Not sure? Choose the closest match.</div>
+        <div class="type-cards">
+          <div class="type-card" data-val="Recorded" onclick="selectType('Recorded')">
+            <div class="tc-icon">🎬</div>
+            <div class="tc-title">Recorded content</div>
+            <div class="tc-desc">Video, module, e-learning</div>
+          </div>
+          <div class="type-card" data-val="Live" onclick="selectType('Live')">
+            <div class="tc-icon">🎤</div>
+            <div class="tc-title">Live session</div>
+            <div class="tc-desc">Training, webinar, workshop</div>
+          </div>
+          <div class="type-card" data-val="Task" onclick="selectType('Task')">
+            <div class="tc-icon">📋</div>
+            <div class="tc-title">Task or asset</div>
+            <div class="tc-desc">Deck, battlecard, playbook</div>
+          </div>
+        </div>
+        <div class="field-error">Please select a request type.</div>
+      </div>
+
+      <!-- Title -->
+      <div class="field" id="field-title">
+        <label>Short title for this request <span class="required">*</span></label>
+        <div class="hint">One line. e.g. "Q3 competitive battlecard for AE team"</div>
+        <input type="text" id="input-title" placeholder="e.g. Sales onboarding module — product overview">
+        <div class="field-error">Please provide a title.</div>
+      </div>
+
+      <!-- Audience -->
+      <div class="field" id="field-audience">
+        <label>Who is this for? <span class="required">*</span></label>
+        <div class="hint">Team name, role, or group</div>
+        <input type="text" id="input-audience" placeholder="e.g. New Account Executives, EMEA Sales">
+        <div class="field-error">Please specify the audience.</div>
+      </div>
+
+      <!-- Urgency -->
+      <div class="field" id="field-urgency">
+        <label>When do you need this? <span class="required">*</span></label>
+        <div class="urgency-options">
+          <div class="urgency-opt" data-val="Yesterday" onclick="selectUrgency('Yesterday')">
+            <div class="u-dot" style="background:#e53e3e"></div>
+            <div><div class="u-label">Yesterday</div><div class="u-sub">Critical blocker</div></div>
+          </div>
+          <div class="urgency-opt" data-val="Right now" onclick="selectUrgency('Right now')">
+            <div class="u-dot" style="background:#dd6b20"></div>
+            <div><div class="u-label">Right now</div><div class="u-sub">This week</div></div>
+          </div>
+          <div class="urgency-opt" data-val="0-1 month" onclick="selectUrgency('0-1 month')">
+            <div class="u-dot" style="background:#d69e2e"></div>
+            <div><div class="u-label">0-1 month</div><div class="u-sub">Soon but not urgent</div></div>
+          </div>
+          <div class="urgency-opt" data-val="1 month+" onclick="selectUrgency('1 month+')">
+            <div class="u-dot" style="background:#38a169"></div>
+            <div><div class="u-label">1 month+</div><div class="u-sub">Planning ahead</div></div>
+          </div>
+        </div>
+        <div class="field-error">Please select urgency.</div>
+      </div>
+
+      <!-- Description -->
+      <div class="field" id="field-summary">
+        <label>Describe what you need <span class="required">*</span></label>
+        <div class="hint">Context, goals, existing assets — the more detail, the faster we can start</div>
+        <textarea id="input-summary" placeholder="What is this for? What outcome does it need to drive? Any existing materials or references we should know about?"></textarea>
+        <div class="field-error">Please provide a description.</div>
+      </div>
+
+      <div class="submit-area">
+        <button class="btn-submit" id="btnSubmit" onclick="submitForm()">Submit request</button>
+        <span class="submit-note">We will confirm via email within 2 business days</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SUCCESS STATE -->
+  <div class="success-card" id="successCard">
+    <div class="success-icon">✅</div>
+    <h2>Request submitted</h2>
+    <div class="intake-id" id="successId">SE-20260619-001</div>
+    <p>We have your request and will review it within 2 business days. Track updates in the <strong>#enablement-intake</strong> Slack channel.</p>
+    <button class="btn-new" onclick="resetForm()">Submit another request</button>
+  </div>
+
+  <!-- STATUS TRACKER -->
+  <div class="tracker-section" id="trackerSection">
+    <h2>Track an existing request</h2>
+    <div class="tracker-lookup">
+      <input type="text" id="trackInput" placeholder="Enter your Intake ID — e.g. SE-20260619-001">
+      <button class="btn-lookup" onclick="lookupStatus()">Look up</button>
+    </div>
+    <div class="tracker-result" id="trackerResult">
+      <div class="tr-header">
+        <div>
+          <div class="tr-id" id="tr-id"></div>
+          <div class="tr-title" id="tr-title"></div>
+        </div>
+        <div class="status-badge" id="tr-badge"></div>
+      </div>
+      <div class="tr-timeline" id="tr-timeline"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── STATE ───────────────────────────────────────────────────
+const state = { team: null, type: null, urgency: null };
+
+// ── GOOGLE APPS SCRIPT WEB APP URL ──────────────────────────
+// After deploying your Apps Script as a Web App, paste its URL here
+// To connect to Apps Script: deploy your script as a Web App and paste the URL below
+// Extensions > Apps Script > Deploy > New deployment > Web App > Anyone > Deploy
+// Leave as-is to run in standalone demo mode
+const APPS_SCRIPT_URL = "YOUR_APPS_SCRIPT_WEB_APP_URL";
+
+// ── TEAM DEFAULTS ────────────────────────────────────────────
+const TEAM_CONFIG = {
+  "Sales": {
+    banner:   "Pre-filled for Sales. We have set the most common defaults for your team.",
+    desc:     "Sales teams typically request recorded demos, competitive battlecards, and onboarding modules.",
+    type:     "Recorded",
+    urgency:  "0-1 month",
+    audience: "Sales Team"
+  },
+  "CS": {
+    banner:   "Pre-filled for Customer Success.",
+    desc:     "CS teams typically request live training sessions, onboarding walkthroughs, and refresher content.",
+    type:     "Live",
+    urgency:  "1 month+",
+    audience: "Customer Success"
+  },
+  "Marketing": {
+    banner:   "Pre-filled for Marketing.",
+    desc:     "Marketing teams typically request task or asset support — decks, one-pagers, co-branded content.",
+    type:     "Task",
+    urgency:  "1 month+",
+    audience: "Marketing"
+  },
+  "Product": {
+    banner:   "Pre-filled for Product.",
+    desc:     "Product teams typically request feature explainer content or internal training materials.",
+    type:     "Recorded",
+    urgency:  "1 month+",
+    audience: "Product Team"
+  },
+  "Other": {
+    banner:   "No team defaults applied.",
+    desc:     "Fill in each field based on your request.",
+    type:     null,
+    urgency:  null,
+    audience: ""
+  }
+};
+
+// ── TEAM SELECTION ───────────────────────────────────────────
+function selectTeam(team) {
+  state.team = team;
+  document.querySelectorAll(".team-pill").forEach(p => p.classList.remove("active"));
+  document.querySelector(`[data-team="${team}"]`).classList.add("active");
+
+  const cfg = TEAM_CONFIG[team];
+  const banner = document.getElementById("teamBanner");
+  document.getElementById("teamBannerTitle").textContent = cfg.banner;
+  document.getElementById("teamBannerDesc").textContent  = cfg.desc;
+  banner.classList.add("visible");
+
+  // Apply pre-fills
+  if (cfg.type)     selectType(cfg.type);
+  if (cfg.urgency)  selectUrgency(cfg.urgency);
+  if (cfg.audience) document.getElementById("input-audience").value = cfg.audience;
+}
+
+function selectType(val) {
+  state.type = val;
+  document.querySelectorAll(".type-card").forEach(c => c.classList.remove("selected"));
+  const card = document.querySelector(`[data-val="${val}"]`);
+  if (card) card.classList.add("selected");
+}
+
+function selectUrgency(val) {
+  state.urgency = val;
+  document.querySelectorAll(".urgency-opt").forEach(o => o.classList.remove("selected"));
+  const opt = document.querySelector(`.urgency-opt[data-val="${val}"]`);
+  if (opt) opt.classList.add("selected");
+}
+
+// ── VALIDATION ───────────────────────────────────────────────
+function validate() {
+  let valid = true;
+
+  const email = document.getElementById("input-email").value.trim();
+  setFieldError("field-email", !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/));
+  if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) valid = false;
+
+  setFieldError("field-type", !state.type);
+  if (!state.type) valid = false;
+
+  const title = document.getElementById("input-title").value.trim();
+  setFieldError("field-title", !title);
+  if (!title) valid = false;
+
+  const audience = document.getElementById("input-audience").value.trim();
+  setFieldError("field-audience", !audience);
+  if (!audience) valid = false;
+
+  setFieldError("field-urgency", !state.urgency);
+  if (!state.urgency) valid = false;
+
+  const summary = document.getElementById("input-summary").value.trim();
+  setFieldError("field-summary", !summary);
+  if (!summary) valid = false;
+
+  return valid;
+}
+
+function setFieldError(fieldId, hasError) {
+  const el = document.getElementById(fieldId);
+  if (hasError) el.classList.add("has-error");
+  else el.classList.remove("has-error");
+}
+
+// ── SUBMIT ───────────────────────────────────────────────────
+function submitForm() {
+  if (!validate()) return;
+
+  const btn = document.getElementById("btnSubmit");
+  btn.disabled = true;
+  btn.textContent = "Submitting…";
+
+  const now   = new Date();
+  const pad   = n => String(n).padStart(2, "0");
+  const date  = `${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}`;
+  const seq   = String(Math.floor(Math.random() * 900) + 100); // placeholder until server assigns
+  const id    = `SE-${date}-${seq}`;
+
+  const payload = {
+    source:   "portal",
+    team:     state.team || "General",
+    email:    document.getElementById("input-email").value.trim(),
+    type:     state.type,
+    title:    document.getElementById("input-title").value.trim(),
+    audience: document.getElementById("input-audience").value.trim(),
+    urgency:  state.urgency,
+    summary:  document.getElementById("input-summary").value.trim(),
+    id:       id
+  };
+
+  // POST to your Apps Script Web App
+  // For local testing the form shows success immediately
+  if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== "YOUR_APPS_SCRIPT_WEB_APP_URL") {
+    fetch(APPS_SCRIPT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    }).then(() => showSuccess(id)).catch(() => showSuccess(id));
+  } else {
+    // Demo mode — show success immediately
+    setTimeout(() => showSuccess(id), 800);
+  }
+}
+
+function showSuccess(id) {
+  document.getElementById("successId").textContent = id;
+  document.getElementById("formCard").style.display = "none";
+  document.getElementById("successCard").classList.add("visible");
+  document.getElementById("trackerSection").style.display = "none";
+}
+
+function resetForm() {
+  document.getElementById("formCard").style.display = "block";
+  document.getElementById("successCard").classList.remove("visible");
+  document.getElementById("trackerSection").style.display = "block";
+  // Reset fields
+  state.type = null; state.urgency = null;
+  document.querySelectorAll(".type-card, .urgency-opt").forEach(el => el.classList.remove("selected"));
+  ["input-email","input-title","input-audience","input-summary"].forEach(id => document.getElementById(id).value = "");
+  document.getElementById("btnSubmit").disabled = false;
+  document.getElementById("btnSubmit").textContent = "Submit request";
+}
+
+// ── STATUS TRACKER ────────────────────────────────────────────
+// In production, this fetches from your Apps Script Web App which queries Asana.
+// Here we show a demo based on the ID pattern.
+function lookupStatus() {
+  const id = document.getElementById("trackInput").value.trim().toUpperCase();
+  if (!id.match(/^SE-\d{8}-\d{3}$/)) {
+    alert("Please enter a valid Intake ID in the format SE-YYYYMMDD-NNN");
+    return;
+  }
+
+  // Demo: derive a fake status from the ID number so each ID looks unique
+  const seqNum = parseInt(id.split("-")[2]);
+  const statuses = ["New", "In Review", "Accepted", "In Progress", "Done"];
+  const statusIdx = seqNum % statuses.length;
+  const status = statuses[statusIdx];
+  const title  = "Your enablement request";
+
+  document.getElementById("tr-id").textContent    = id;
+  document.getElementById("tr-title").textContent = title;
+
+  const badge = document.getElementById("tr-badge");
+  badge.textContent = status;
+  badge.className   = "status-badge status-" + status.toLowerCase().replace(" ", "-");
+
+  const timelineEl = document.getElementById("tr-timeline");
+  const allSteps   = ["New", "In Review", "Accepted", "In Progress", "Done"];
+  timelineEl.innerHTML = allSteps.map((step, i) => {
+    const done    = i < statusIdx;
+    const current = i === statusIdx;
+    const dotCls  = done ? "tl-dot done" : current ? "tl-dot current" : "tl-dot future";
+    const date    = done || current ? formatDateShort(new Date(Date.now() - (statusIdx - i) * 3 * 24 * 60 * 60 * 1000)) : "";
+    return `<div class="tl-step"><div class="${dotCls}"></div><div><div class="tl-label">${step}</div>${date ? `<div class="tl-date">${date}</div>` : ""}</div></div>`;
+  }).join("");
+
+  document.getElementById("trackerResult").classList.add("visible");
+}
+
+function formatDateShort(d) {
+  const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+}
+</script>
+</body>
+</html>
