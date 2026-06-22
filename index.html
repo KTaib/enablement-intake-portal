@@ -3,514 +3,543 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Acquia Enablement — Submit a Request</title>
+<title>Sales Enablement Intake Form</title>
 <style>
   :root {
-    --acquia-blue: #0073e6;
-    --acquia-dark: #0a1929;
+    --blue: #4B3FC7;
+    --blue-dark: #3730a3;
+    --blue-light: #ede9fe;
     --surface: #ffffff;
-    --surface-2: #f5f7fa;
-    --border: #e2e8f0;
-    --text-primary: #0f1923;
-    --text-secondary: #4a5568;
-    --text-muted: #718096;
-    --red: #e53e3e;
-    --orange: #dd6b20;
-    --yellow: #d69e2e;
-    --green: #38a169;
-    --radius: 10px;
-    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
-    --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+    --surface-2: #f8f8fc;
+    --border: #e4e4ef;
+    --text: #1a1a2e;
+    --text-2: #4a4a6a;
+    --text-3: #8888aa;
+    --red: #dc2626;
+    --green: #16a34a;
+    --radius: 12px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--surface-2); color: var(--text-primary); line-height: 1.6; }
+  html, body { min-height: 100vh; font-family: 'Google Sans', Roboto, -apple-system, sans-serif; background: var(--surface-2); color: var(--text); line-height: 1.6; }
 
-  /* ── Layout ── */
-  .page-wrap { max-width: 760px; margin: 0 auto; padding: 0 20px 60px; }
-  .page-header { padding: 32px 0 24px; border-bottom: 1px solid var(--border); margin-bottom: 32px; }
-  .page-header .logo { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-  .logo-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--acquia-blue); }
-  .logo-text { font-size: 13px; font-weight: 600; color: var(--acquia-blue); letter-spacing: 0.05em; text-transform: uppercase; }
-  .page-header h1 { font-size: 26px; font-weight: 700; color: var(--acquia-dark); letter-spacing: -0.3px; }
-  .page-header p { font-size: 15px; color: var(--text-secondary); margin-top: 6px; }
+  /* ── Page layout ── */
+  .page { max-width: 680px; margin: 0 auto; padding: 24px 16px 80px; }
 
-  /* ── Team selector ── */
-  .team-selector { margin-bottom: 32px; }
-  .team-selector label { font-size: 13px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; display: block; margin-bottom: 10px; }
-  .team-pills { display: flex; flex-wrap: wrap; gap: 8px; }
-  .team-pill { padding: 8px 18px; border: 1.5px solid var(--border); border-radius: 100px; font-size: 14px; font-weight: 500; cursor: pointer; background: var(--surface); color: var(--text-secondary); transition: all 0.15s; user-select: none; }
-  .team-pill:hover { border-color: var(--acquia-blue); color: var(--acquia-blue); }
-  .team-pill.active { background: var(--acquia-blue); border-color: var(--acquia-blue); color: white; }
+  /* ── Header card (purple bar like Google Forms) ── */
+  .form-header { background: var(--surface); border-radius: var(--radius) var(--radius) 0 0; border-top: 10px solid var(--blue); border: 1px solid var(--border); border-top: 10px solid var(--blue); padding: 24px 28px 20px; margin-bottom: 12px; }
+  .form-header h1 { font-size: 28px; font-weight: 400; color: var(--text); margin-bottom: 8px; }
+  .form-header p { font-size: 14px; color: var(--text-2); line-height: 1.6; }
+  .form-header .required-note { font-size: 13px; color: var(--red); margin-top: 12px; }
 
-  /* ── Team banner ── */
-  .team-banner { background: #ebf5ff; border: 1px solid #bee3f8; border-radius: var(--radius); padding: 12px 16px; margin-bottom: 24px; font-size: 14px; color: #2b6cb0; display: none; }
-  .team-banner.visible { display: block; }
-  .team-banner strong { display: block; margin-bottom: 2px; }
+  /* ── Section header (colored banner like Google Forms sections) ── */
+  .section-banner { background: var(--blue); color: white; border-radius: var(--radius) var(--radius) 0 0; padding: 16px 24px 14px; margin-top: 12px; }
+  .section-banner h2 { font-size: 18px; font-weight: 500; }
+  .section-banner p { font-size: 13px; opacity: 0.85; margin-top: 4px; }
+  .section-body { background: var(--surface); border: 1px solid var(--border); border-top: none; border-radius: 0 0 var(--radius) var(--radius); padding: 20px 24px 24px; margin-bottom: 12px; }
 
-  /* ── Form card ── */
-  .form-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
-  .form-card-header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
-  .form-card-header h2 { font-size: 16px; font-weight: 600; color: var(--acquia-dark); }
-  .form-card-header p { font-size: 13px; color: var(--text-muted); margin-top: 3px; }
-  .form-body { padding: 24px; }
+  /* ── Question card ── */
+  .q-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; }
+  .q-card.hidden { display: none; }
+  .q-label { font-size: 15px; color: var(--text); margin-bottom: 12px; display: block; }
+  .q-label .req { color: var(--red); margin-left: 3px; }
 
-  /* ── Form fields ── */
-  .field { margin-bottom: 22px; }
-  .field:last-child { margin-bottom: 0; }
-  .field label { font-size: 14px; font-weight: 600; color: var(--text-primary); display: block; margin-bottom: 6px; }
-  .field label .required { color: var(--red); margin-left: 3px; }
-  .field .hint { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
-  .field input[type="text"],
-  .field input[type="email"],
-  .field select,
-  .field textarea {
-    width: 100%; padding: 10px 12px; border: 1.5px solid var(--border); border-radius: 8px;
-    font-size: 15px; color: var(--text-primary); background: var(--surface);
-    transition: border-color 0.15s; outline: none; font-family: inherit;
+  /* ── Text inputs ── */
+  .q-card input[type="text"],
+  .q-card input[type="email"],
+  .q-card textarea {
+    width: 100%; border: none; border-bottom: 1px solid var(--border);
+    padding: 6px 0; font-size: 14px; color: var(--text); outline: none;
+    background: transparent; font-family: inherit; transition: border-color 0.15s;
   }
-  .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--acquia-blue); box-shadow: 0 0 0 3px rgba(0,115,230,0.1); }
-  .field textarea { resize: vertical; min-height: 100px; }
-  .field select { cursor: pointer; }
+  .q-card input[type="text"]:focus,
+  .q-card input[type="email"]:focus,
+  .q-card textarea:focus { border-bottom-color: var(--blue); }
+  .q-card textarea { resize: vertical; min-height: 80px; }
+  .q-placeholder { font-size: 13px; color: var(--text-3); margin-top: 4px; }
 
-  /* ── Request type cards ── */
-  .type-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-  @media (max-width: 520px) { .type-cards { grid-template-columns: 1fr; } }
-  .type-card { border: 1.5px solid var(--border); border-radius: 8px; padding: 14px 14px 12px; cursor: pointer; transition: all 0.15s; background: var(--surface); }
-  .type-card:hover { border-color: var(--acquia-blue); }
-  .type-card.selected { border-color: var(--acquia-blue); background: #f0f7ff; }
-  .type-card .tc-icon { font-size: 20px; margin-bottom: 6px; }
-  .type-card .tc-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
-  .type-card .tc-desc { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+  /* ── Radio options ── */
+  .radio-list { display: flex; flex-direction: column; gap: 4px; }
+  .radio-opt { display: flex; align-items: flex-start; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer; transition: background 0.1s; }
+  .radio-opt:hover { background: var(--surface-2); }
+  .radio-opt input[type="radio"] { margin-top: 2px; accent-color: var(--blue); flex-shrink: 0; width: 16px; height: 16px; }
+  .radio-opt label { font-size: 14px; color: var(--text-2); cursor: pointer; line-height: 1.5; }
 
-  /* ── Urgency ── */
-  .urgency-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-  .urgency-opt { border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 12px; cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 8px; }
-  .urgency-opt:hover { border-color: #ccc; }
-  .urgency-opt.selected { border-color: var(--acquia-blue); background: #f0f7ff; }
-  .urgency-opt .u-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-  .urgency-opt .u-label { font-size: 14px; font-weight: 500; color: var(--text-primary); }
-  .urgency-opt .u-sub { font-size: 12px; color: var(--text-muted); }
+  /* ── Checkbox options ── */
+  .check-list { display: flex; flex-direction: column; gap: 4px; }
+  .check-opt { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer; transition: background 0.1s; }
+  .check-opt:hover { background: var(--surface-2); }
+  .check-opt input[type="checkbox"] { accent-color: var(--blue); flex-shrink: 0; width: 16px; height: 16px; }
+  .check-opt label { font-size: 14px; color: var(--text-2); cursor: pointer; }
+  .other-input { border: none; border-bottom: 1px solid var(--border); padding: 2px 0; font-size: 14px; color: var(--text); outline: none; flex: 1; background: transparent; font-family: inherit; }
+  .other-input:focus { border-bottom-color: var(--blue); }
 
-  /* ── Submit area ── */
-  .submit-area { margin-top: 28px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
-  .btn-submit { background: var(--acquia-blue); color: white; border: none; border-radius: 8px; padding: 12px 28px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.15s; letter-spacing: -0.1px; }
-  .btn-submit:hover { background: #0062cc; }
-  .btn-submit:disabled { background: #a0aec0; cursor: not-allowed; }
-  .submit-note { font-size: 13px; color: var(--text-muted); }
+  /* ── Navigation buttons ── */
+  .nav-bar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; margin-top: 12px; }
+  .btn-next { background: var(--blue); color: white; border: none; border-radius: 6px; padding: 10px 28px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.15s; font-family: inherit; }
+  .btn-next:hover { background: var(--blue-dark); }
+  .btn-back { background: transparent; color: var(--blue); border: none; padding: 10px 16px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: inherit; }
+  .btn-back:hover { background: var(--blue-light); border-radius: 6px; }
+  .btn-submit { background: var(--blue); color: white; border: none; border-radius: 6px; padding: 10px 28px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: inherit; }
+  .btn-submit:hover { background: var(--blue-dark); }
+  .btn-clear { background: transparent; color: var(--blue); border: none; padding: 10px 16px; font-size: 14px; cursor: pointer; font-family: inherit; }
 
-  /* ── Success state ── */
-  .success-card { background: var(--surface); border: 1px solid #9ae6b4; border-radius: var(--radius); box-shadow: var(--shadow); padding: 40px; text-align: center; display: none; }
-  .success-card.visible { display: block; }
-  .success-icon { font-size: 40px; margin-bottom: 16px; }
-  .success-card h2 { font-size: 22px; font-weight: 700; color: var(--acquia-dark); margin-bottom: 8px; }
-  .success-card .intake-id { display: inline-block; background: #f0f7ff; border: 1px solid #bee3f8; border-radius: 6px; padding: 6px 16px; font-size: 15px; font-weight: 600; color: var(--acquia-blue); margin: 10px 0 16px; letter-spacing: 0.05em; }
-  .success-card p { font-size: 15px; color: var(--text-secondary); max-width: 420px; margin: 0 auto 20px; }
-  .btn-new { background: transparent; border: 1.5px solid var(--acquia-blue); color: var(--acquia-blue); border-radius: 8px; padding: 10px 24px; font-size: 14px; font-weight: 600; cursor: pointer; }
-  .btn-new:hover { background: #f0f7ff; }
+  /* ── Error state ── */
+  .q-card.has-error { border-color: var(--red); }
+  .field-error { font-size: 12px; color: var(--red); margin-top: 6px; display: none; }
+  .q-card.has-error .field-error { display: block; }
 
-  /* ── Status tracker ── */
-  .tracker-section { margin-top: 40px; }
-  .tracker-section h2 { font-size: 16px; font-weight: 700; color: var(--acquia-dark); margin-bottom: 16px; }
-  .tracker-lookup { display: flex; gap: 8px; margin-bottom: 20px; }
-  .tracker-lookup input { flex: 1; padding: 10px 12px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 14px; outline: none; }
-  .tracker-lookup input:focus { border-color: var(--acquia-blue); }
-  .btn-lookup { background: var(--acquia-dark); color: white; border: none; border-radius: 8px; padding: 10px 20px; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; }
-  .tracker-result { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; display: none; }
-  .tracker-result.visible { display: block; }
-  .tr-header { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-  .tr-id { font-size: 14px; font-weight: 700; color: var(--acquia-blue); }
-  .tr-title { font-size: 14px; color: var(--text-secondary); }
-  .status-badge { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
-  .status-new         { background: #e9ecef; color: #4a5568; }
-  .status-in-review   { background: #fff3cd; color: #856404; }
-  .status-accepted    { background: #d1ecf1; color: #0c5460; }
-  .status-in-progress { background: #cce5ff; color: #004085; }
-  .status-done        { background: #d4edda; color: #155724; }
-  .status-cancelled   { background: #f8d7da; color: #721c24; }
-  .tr-timeline { padding: 16px 18px; }
-  .tl-step { display: flex; gap: 12px; margin-bottom: 14px; }
-  .tl-step:last-child { margin-bottom: 0; }
-  .tl-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
-  .tl-dot.done  { background: var(--green); }
-  .tl-dot.current { background: var(--acquia-blue); }
-  .tl-dot.future { background: var(--border); }
-  .tl-label { font-size: 14px; font-weight: 500; color: var(--text-primary); }
-  .tl-date { font-size: 12px; color: var(--text-muted); }
+  /* ── Progress bar ── */
+  .progress-bar { height: 4px; background: var(--border); border-radius: 2px; margin-bottom: 16px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.3s; }
 
-  /* ── Error ── */
-  .field-error { font-size: 13px; color: var(--red); margin-top: 5px; display: none; }
-  .field.has-error input, .field.has-error textarea, .field.has-error select { border-color: var(--red); }
-  .field.has-error .field-error { display: block; }
+  /* ── Success screen ── */
+  .success-screen { display: none; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 48px 32px; text-align: center; }
+  .success-screen.visible { display: block; }
+  .success-check { width: 56px; height: 56px; background: var(--blue-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 26px; }
+  .success-screen h2 { font-size: 22px; font-weight: 400; color: var(--text); margin-bottom: 8px; }
+  .intake-id-badge { display: inline-block; background: var(--blue-light); color: var(--blue); border-radius: 6px; padding: 6px 18px; font-size: 15px; font-weight: 500; margin: 12px 0 16px; letter-spacing: 0.04em; }
+  .success-screen p { font-size: 14px; color: var(--text-2); max-width: 400px; margin: 0 auto 24px; }
+  .btn-another { background: transparent; border: 1px solid var(--border); border-radius: 6px; padding: 10px 24px; font-size: 14px; color: var(--blue); cursor: pointer; font-family: inherit; }
+  .btn-another:hover { background: var(--blue-light); }
+
+  /* ── Account bar (mimics Google Forms) ── */
+  .acct-bar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 24px; margin-bottom: 12px; font-size: 13px; color: var(--text-2); display: flex; align-items: center; gap: 8px; }
+  .acct-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); }
 </style>
 </head>
 <body>
-<div class="page-wrap">
+<div class="page">
 
-  <div class="page-header">
-    <div class="logo"><div class="logo-dot"></div><span class="logo-text">Acquia Sales Enablement</span></div>
-    <h1>Submit an enablement request</h1>
-    <p>Tell us what you need. Pre-filled for your team so it takes under 2 minutes.</p>
-  </div>
+  <!-- Progress bar -->
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:33%"></div></div>
 
-  <!-- TEAM SELECTOR -->
-  <div class="team-selector">
-    <label>Which team are you on?</label>
-    <div class="team-pills">
-      <div class="team-pill" data-team="Sales" onclick="selectTeam('Sales')">Sales</div>
-      <div class="team-pill" data-team="CS" onclick="selectTeam('CS')">Customer Success</div>
-      <div class="team-pill" data-team="Marketing" onclick="selectTeam('Marketing')">Marketing</div>
-      <div class="team-pill" data-team="Product" onclick="selectTeam('Product')">Product</div>
-      <div class="team-pill" data-team="Other" onclick="selectTeam('Other')">Other</div>
+  <!-- PAGE 1 -->
+  <div id="page1">
+
+    <!-- Header -->
+    <div class="form-header">
+      <h1>Sales Enablement Intake Form</h1>
+      <p>Please complete this form to request an Enablement Session or Task. Our enablement team will review your submission and contact you shortly.</p>
+      <div class="required-note">* Indicates required question</div>
     </div>
-  </div>
 
-  <!-- TEAM BANNER -->
-  <div class="team-banner" id="teamBanner">
-    <strong id="teamBannerTitle"></strong>
-    <span id="teamBannerDesc"></span>
-  </div>
-
-  <!-- MAIN FORM -->
-  <div class="form-card" id="formCard">
-    <div class="form-card-header">
-      <h2>Request details</h2>
-      <p>All fields marked * are required. We will follow up on anything unclear.</p>
+    <!-- Email -->
+    <div class="q-card" id="qEmail">
+      <label class="q-label">Email <span class="req">*</span></label>
+      <input type="email" id="inputEmail" placeholder="Your answer">
+      <div class="field-error">Please enter your work email.</div>
     </div>
-    <div class="form-body">
 
-      <!-- Requestor -->
-      <div class="field" id="field-email">
-        <label>Your work email <span class="required">*</span></label>
-        <input type="email" id="input-email" placeholder="you@acquia.com">
-        <div class="field-error">Please enter a valid email address.</div>
-      </div>
-
-      <!-- Request type -->
-      <div class="field" id="field-type">
-        <label>What type of request is this? <span class="required">*</span></label>
-        <div class="hint">Not sure? Choose the closest match.</div>
-        <div class="type-cards">
-          <div class="type-card" data-val="Recorded" onclick="selectType('Recorded')">
-            <div class="tc-icon">🎬</div>
-            <div class="tc-title">Recorded content</div>
-            <div class="tc-desc">Video, module, e-learning</div>
-          </div>
-          <div class="type-card" data-val="Live" onclick="selectType('Live')">
-            <div class="tc-icon">🎤</div>
-            <div class="tc-title">Live session</div>
-            <div class="tc-desc">Training, webinar, workshop</div>
-          </div>
-          <div class="type-card" data-val="Task" onclick="selectType('Task')">
-            <div class="tc-icon">📋</div>
-            <div class="tc-title">Task or asset</div>
-            <div class="tc-desc">Deck, battlecard, playbook</div>
-          </div>
+    <!-- Branch selector -->
+    <div class="q-card" id="qType">
+      <label class="q-label">Pick Recorded Product Enablement or Live Sales Enablement Training Session or Task Request <span class="req">*</span></label>
+      <div class="radio-list">
+        <div class="radio-opt">
+          <input type="radio" name="type" id="typeRecorded" value="Recorded">
+          <label for="typeRecorded">Recorded Enablement Session - Ideal for product announcements or courses with a knowledge check. Offers on-demand, self-paced learning.</label>
         </div>
-        <div class="field-error">Please select a request type.</div>
+        <div class="radio-opt">
+          <input type="radio" name="type" id="typeLive" value="Live">
+          <label for="typeLive">Live Enablement Session - Best for sales skills, competitor updates, value selling, and live Q&A. Offers interactive, instructor-led learning.</label>
+        </div>
+        <div class="radio-opt">
+          <input type="radio" name="type" id="typeTask" value="Task">
+          <label for="typeTask">Task request - For specific enablement needs such as sales assets, process documentation, or resource updates. Offers support through tailored deliverables.</label>
+        </div>
       </div>
+      <div class="field-error">Please select a request type.</div>
+    </div>
 
-      <!-- Title -->
-      <div class="field" id="field-title">
-        <label>Short title for this request <span class="required">*</span></label>
-        <div class="hint">One line. e.g. "Q3 competitive battlecard for AE team"</div>
-        <input type="text" id="input-title" placeholder="e.g. Sales onboarding module — product overview">
+    <div class="nav-bar">
+      <div></div>
+      <button class="btn-next" onclick="goPage2()">Next</button>
+    </div>
+
+  </div><!-- /page1 -->
+
+  <!-- PAGE 2A — RECORDED -->
+  <div id="page2Recorded" style="display:none">
+    <div class="section-banner">
+      <h2>Recorded Enablement Session</h2>
+      <p>Ideal for product announcements or courses with a knowledge check. Offers on-demand, self-paced learning.</p>
+    </div>
+    <div class="section-body">
+
+      <div class="q-card" id="qRecTitle">
+        <label class="q-label">What is the title of this training? <span class="req">*</span></label>
+        <input type="text" id="recTitle" placeholder="Your answer">
         <div class="field-error">Please provide a title.</div>
       </div>
 
-      <!-- Audience -->
-      <div class="field" id="field-audience">
-        <label>Who is this for? <span class="required">*</span></label>
-        <div class="hint">Team name, role, or group</div>
-        <input type="text" id="input-audience" placeholder="e.g. New Account Executives, EMEA Sales">
-        <div class="field-error">Please specify the audience.</div>
+      <div class="q-card" id="qRecCriteria">
+        <label class="q-label">What productivity criteria does this training meet? <span class="req">*</span></label>
+        <div class="check-list">
+          <div class="check-opt"><input type="checkbox" id="recCritDeal"><label for="recCritDeal">Deal Value</label></div>
+          <div class="check-opt"><input type="checkbox" id="recCritWin"><label for="recCritWin">Win Rate</label></div>
+          <div class="check-opt"><input type="checkbox" id="recCritConv"><label for="recCritConv">Conversion Rate</label></div>
+          <div class="check-opt"><input type="checkbox" id="recCritPipe"><label for="recCritPipe">Pipeline Generation</label></div>
+          <div class="check-opt"><input type="checkbox" id="recCritOther"><label for="recCritOther">Other:</label><input type="text" class="other-input" id="recCritOtherText" placeholder=""></div>
+        </div>
+        <div class="field-error">Please select at least one criteria.</div>
       </div>
 
-      <!-- Urgency -->
-      <div class="field" id="field-urgency">
-        <label>When do you need this? <span class="required">*</span></label>
-        <div class="urgency-options">
-          <div class="urgency-opt" data-val="Yesterday" onclick="selectUrgency('Yesterday')">
-            <div class="u-dot" style="background:#e53e3e"></div>
-            <div><div class="u-label">Yesterday</div><div class="u-sub">Critical blocker</div></div>
-          </div>
-          <div class="urgency-opt" data-val="Right now" onclick="selectUrgency('Right now')">
-            <div class="u-dot" style="background:#dd6b20"></div>
-            <div><div class="u-label">Right now</div><div class="u-sub">This week</div></div>
-          </div>
-          <div class="urgency-opt" data-val="0-1 month" onclick="selectUrgency('0-1 month')">
-            <div class="u-dot" style="background:#d69e2e"></div>
-            <div><div class="u-label">0-1 month</div><div class="u-sub">Soon but not urgent</div></div>
-          </div>
-          <div class="urgency-opt" data-val="1 month+" onclick="selectUrgency('1 month+')">
-            <div class="u-dot" style="background:#38a169"></div>
-            <div><div class="u-label">1 month+</div><div class="u-sub">Planning ahead</div></div>
-          </div>
+      <div class="q-card" id="qRecFocus">
+        <label class="q-label">What is the enablement focus area? <span class="req">*</span></label>
+        <div class="check-list">
+          <div class="check-opt"><input type="checkbox" id="recFocProd"><label for="recFocProd">Product Knowledge</label></div>
+          <div class="check-opt"><input type="checkbox" id="recFocSales"><label for="recFocSales">Sales Skills</label></div>
+          <div class="check-opt"><input type="checkbox" id="recFocProc"><label for="recFocProc">Sales Process</label></div>
+          <div class="check-opt"><input type="checkbox" id="recFocPart"><label for="recFocPart">Partner Selling</label></div>
+          <div class="check-opt"><input type="checkbox" id="recFocOther"><label for="recFocOther">Other:</label><input type="text" class="other-input" id="recFocOtherText" placeholder=""></div>
+        </div>
+        <div class="field-error">Please select at least one focus area.</div>
+      </div>
+
+      <div class="q-card" id="qRecWhy">
+        <label class="q-label">Why is this training important, i.e. motivate why sellers need to attend? <span class="req">*</span></label>
+        <textarea id="recWhy" placeholder="Your answer"></textarea>
+        <div class="field-error">Please provide a reason.</div>
+      </div>
+
+      <div class="q-card" id="qRecSummary">
+        <label class="q-label">Please include a training summary that will populate the event description. <span class="req">*</span></label>
+        <textarea id="recSummary" placeholder="Your answer"></textarea>
+        <div class="field-error">Please provide a summary.</div>
+      </div>
+
+      <div class="q-card" id="qRecNewRef">
+        <label class="q-label">Is this training new or a refresher? <span class="req">*</span></label>
+        <div class="radio-list">
+          <div class="radio-opt"><input type="radio" name="recNewRef" id="recNew" value="New"><label for="recNew">New</label></div>
+          <div class="radio-opt"><input type="radio" name="recNewRef" id="recRefresher" value="Refresher"><label for="recRefresher">Refresher</label></div>
+        </div>
+        <div class="field-error">Please select one.</div>
+      </div>
+
+      <div class="q-card" id="qRecAudience">
+        <label class="q-label">Who all should be enrolled in this training (select multiple if required)? <span class="req">*</span></label>
+        <div class="check-list">
+          <div class="check-opt"><input type="checkbox" id="recAudSales"><label for="recAudSales">Sales Group (all 250 members of email alias salesgrp@acquia)</label></div>
+          <div class="check-opt"><input type="checkbox" id="recAudPresales"><label for="recAudPresales">Presales</label></div>
+          <div class="check-opt"><input type="checkbox" id="recAudCSMs"><label for="recAudCSMs">CSMs</label></div>
+          <div class="check-opt"><input type="checkbox" id="recAudAMs"><label for="recAudAMs">AMs</label></div>
+          <div class="check-opt"><input type="checkbox" id="recAudAEs"><label for="recAudAEs">AEs</label></div>
+          <div class="check-opt"><input type="checkbox" id="recAudBDRs"><label for="recAudBDRs">BDRs</label></div>
+          <div class="check-opt"><input type="checkbox" id="recAudTAMs"><label for="recAudTAMs">TAMs</label></div>
+          <div class="check-opt"><input type="checkbox" id="recAudOther"><label for="recAudOther">Other:</label><input type="text" class="other-input" id="recAudOtherText" placeholder=""></div>
+        </div>
+        <div class="field-error">Please select at least one audience.</div>
+      </div>
+
+      <div class="q-card" id="qRecUrgency">
+        <label class="q-label">How soon will reps benefit from this enablement? <span class="req">*</span></label>
+        <div class="radio-list">
+          <div class="radio-opt"><input type="radio" name="recUrgency" id="recUrgY" value="Yesterday"><label for="recUrgY">Yesterday: this information is already live, and reps need to catch up.</label></div>
+          <div class="radio-opt"><input type="radio" name="recUrgency" id="recUrgN" value="Right now"><label for="recUrgN">Right now: reps can use this information immediately</label></div>
+          <div class="radio-opt"><input type="radio" name="recUrgency" id="recUrg01" value="0-1 month"><label for="recUrg01">0 - 1 month: reps will use this in some opportunities in the coming weeks</label></div>
+          <div class="radio-opt"><input type="radio" name="recUrgency" id="recUrg1p" value="1 month+"><label for="recUrg1p">1 month or more: information prepares reps for future activities</label></div>
         </div>
         <div class="field-error">Please select urgency.</div>
       </div>
 
-      <!-- Description -->
-      <div class="field" id="field-summary">
-        <label>Describe what you need <span class="required">*</span></label>
-        <div class="hint">Context, goals, existing assets — the more detail, the faster we can start</div>
-        <textarea id="input-summary" placeholder="What is this for? What outcome does it need to drive? Any existing materials or references we should know about?"></textarea>
-        <div class="field-error">Please provide a description.</div>
+      <div class="q-card">
+        <label class="q-label">Please list all individuals participating in the session recording and deck creation? <span class="req">*</span></label>
+        <input type="text" id="recPeople" placeholder="Your answer">
       </div>
 
-      <div class="submit-area">
-        <button class="btn-submit" id="btnSubmit" onclick="submitForm()">Submit request</button>
-        <span class="submit-note">We will confirm via email within 2 business days</span>
+    </div><!-- /section-body -->
+
+    <div class="nav-bar">
+      <button class="btn-back" onclick="goPage1()">Back</button>
+      <button class="btn-submit" onclick="submitForm()">Submit</button>
+    </div>
+  </div><!-- /page2Recorded -->
+
+  <!-- PAGE 2B — LIVE -->
+  <div id="page2Live" style="display:none">
+    <div class="section-banner">
+      <h2>Live Enablement Session</h2>
+      <p>Best for sales skills, competitor updates, value selling, and live Q&A. Offers interactive, instructor-led learning.</p>
+    </div>
+    <div class="section-body">
+
+      <div class="q-card" id="qLivTitle">
+        <label class="q-label">What is the title of this training? <span class="req">*</span></label>
+        <input type="text" id="livTitle" placeholder="Your answer">
+        <div class="field-error">Please provide a title.</div>
       </div>
 
-    </div>
-  </div>
-
-  <!-- SUCCESS STATE -->
-  <div class="success-card" id="successCard">
-    <div class="success-icon">✅</div>
-    <h2>Request submitted</h2>
-    <div class="intake-id" id="successId">SE-20260619-001</div>
-    <p>We have your request and will review it within 2 business days. Track updates in the <strong>#enablement-intake</strong> Slack channel.</p>
-    <button class="btn-new" onclick="resetForm()">Submit another request</button>
-  </div>
-
-  <!-- STATUS TRACKER -->
-  <div class="tracker-section" id="trackerSection">
-    <h2>Track an existing request</h2>
-    <div class="tracker-lookup">
-      <input type="text" id="trackInput" placeholder="Enter your Intake ID — e.g. SE-20260619-001">
-      <button class="btn-lookup" onclick="lookupStatus()">Look up</button>
-    </div>
-    <div class="tracker-result" id="trackerResult">
-      <div class="tr-header">
-        <div>
-          <div class="tr-id" id="tr-id"></div>
-          <div class="tr-title" id="tr-title"></div>
+      <div class="q-card" id="qLivCriteria">
+        <label class="q-label">What productivity criteria does this training meet? <span class="req">*</span></label>
+        <div class="check-list">
+          <div class="check-opt"><input type="checkbox" id="livCritDeal"><label for="livCritDeal">Deal Value</label></div>
+          <div class="check-opt"><input type="checkbox" id="livCritWin"><label for="livCritWin">Win Rate</label></div>
+          <div class="check-opt"><input type="checkbox" id="livCritConv"><label for="livCritConv">Conversion Rate</label></div>
+          <div class="check-opt"><input type="checkbox" id="livCritPipe"><label for="livCritPipe">Pipeline Generation</label></div>
+          <div class="check-opt"><input type="checkbox" id="livCritOther"><label for="livCritOther">Other:</label><input type="text" class="other-input" id="livCritOtherText" placeholder=""></div>
         </div>
-        <div class="status-badge" id="tr-badge"></div>
+        <div class="field-error">Please select at least one criteria.</div>
       </div>
-      <div class="tr-timeline" id="tr-timeline"></div>
+
+      <div class="q-card" id="qLivFocus">
+        <label class="q-label">What is the enablement focus area? <span class="req">*</span></label>
+        <div class="check-list">
+          <div class="check-opt"><input type="checkbox" id="livFocProd"><label for="livFocProd">Product Knowledge</label></div>
+          <div class="check-opt"><input type="checkbox" id="livFocSales"><label for="livFocSales">Sales Skills</label></div>
+          <div class="check-opt"><input type="checkbox" id="livFocProc"><label for="livFocProc">Sales Process</label></div>
+          <div class="check-opt"><input type="checkbox" id="livFocPart"><label for="livFocPart">Partner Selling</label></div>
+          <div class="check-opt"><input type="checkbox" id="livFocOther"><label for="livFocOther">Other:</label><input type="text" class="other-input" id="livFocOtherText" placeholder=""></div>
+        </div>
+        <div class="field-error">Please select at least one focus area.</div>
+      </div>
+
+      <div class="q-card" id="qLivSummary">
+        <label class="q-label">Please include a training summary that will populate the event description. <span class="req">*</span></label>
+        <textarea id="livSummary" placeholder="Your answer"></textarea>
+        <div class="field-error">Please provide a summary.</div>
+      </div>
+
+      <div class="q-card" id="qLivNewRef">
+        <label class="q-label">Is this training new or a refresher? <span class="req">*</span></label>
+        <div class="radio-list">
+          <div class="radio-opt"><input type="radio" name="livNewRef" id="livNew" value="New"><label for="livNew">New</label></div>
+          <div class="radio-opt"><input type="radio" name="livNewRef" id="livRefresher" value="Refresher"><label for="livRefresher">Refresher</label></div>
+        </div>
+        <div class="field-error">Please select one.</div>
+      </div>
+
+      <div class="q-card" id="qLivAudience">
+        <label class="q-label">Who should we invite to this session (select multiple if required)? <span class="req">*</span></label>
+        <div class="check-list">
+          <div class="check-opt"><input type="checkbox" id="livAudSales"><label for="livAudSales">Sales Group (all 250 members of email alias salesgrp@acquia)</label></div>
+          <div class="check-opt"><input type="checkbox" id="livAudPresales"><label for="livAudPresales">Presales</label></div>
+          <div class="check-opt"><input type="checkbox" id="livAudCSMs"><label for="livAudCSMs">CSMs</label></div>
+          <div class="check-opt"><input type="checkbox" id="livAudAMs"><label for="livAudAMs">AMs</label></div>
+          <div class="check-opt"><input type="checkbox" id="livAudAEs"><label for="livAudAEs">AEs</label></div>
+          <div class="check-opt"><input type="checkbox" id="livAudBDRs"><label for="livAudBDRs">BDRs</label></div>
+          <div class="check-opt"><input type="checkbox" id="livAudTAMs"><label for="livAudTAMs">TAMs</label></div>
+          <div class="check-opt"><input type="checkbox" id="livAudOther"><label for="livAudOther">Other:</label><input type="text" class="other-input" id="livAudOtherText" placeholder=""></div>
+        </div>
+        <div class="field-error">Please select at least one audience.</div>
+      </div>
+
+      <div class="q-card" id="qLivUrgency">
+        <label class="q-label">How soon will reps benefit from this enablement? <span class="req">*</span></label>
+        <div class="radio-list">
+          <div class="radio-opt"><input type="radio" name="livUrgency" id="livUrgY" value="Yesterday"><label for="livUrgY">Yesterday: this information is already live, and reps need to catch up.</label></div>
+          <div class="radio-opt"><input type="radio" name="livUrgency" id="livUrgN" value="Right now"><label for="livUrgN">Right now: reps can use this information immediately</label></div>
+          <div class="radio-opt"><input type="radio" name="livUrgency" id="livUrg01" value="0-1 month"><label for="livUrg01">0 - 1 month: reps will use this in some opportunities in the coming weeks</label></div>
+          <div class="radio-opt"><input type="radio" name="livUrgency" id="livUrg1p" value="1 month+"><label for="livUrg1p">1 month or more: information prepares reps for future activities</label></div>
+        </div>
+        <div class="field-error">Please select urgency.</div>
+      </div>
+
+      <div class="q-card">
+        <label class="q-label">Please list all individuals presenting during this live session and deck creation? <span class="req">*</span></label>
+        <input type="text" id="livPresenters" placeholder="Your answer">
+      </div>
+
+      <div class="q-card">
+        <label class="q-label">Who else must be present? (Please be specific, as your answer will be used for scheduling.)</label>
+        <input type="text" id="livOthers" placeholder="Your answer">
+      </div>
+
+    </div><!-- /section-body -->
+
+    <div class="nav-bar">
+      <button class="btn-back" onclick="goPage1()">Back</button>
+      <button class="btn-submit" onclick="submitForm()">Submit</button>
     </div>
+  </div><!-- /page2Live -->
+
+  <!-- PAGE 2C — TASK -->
+  <div id="page2Task" style="display:none">
+    <div class="section-banner">
+      <h2>Task request</h2>
+      <p>For specific enablement needs such as sales assets, process documentation, or resource updates. Offers support through tailored deliverables.</p>
+    </div>
+    <div class="section-body">
+
+      <div class="q-card" id="qTskAudience">
+        <label class="q-label">The teams you are trying to reach with this information: <span class="req">*</span></label>
+        <div class="check-list">
+          <div class="check-opt"><input type="checkbox" id="tskAudSales"><label for="tskAudSales">Sales Group (all 250 members of email alias salesgrp@acquia)</label></div>
+          <div class="check-opt"><input type="checkbox" id="tskAudPresales"><label for="tskAudPresales">Presales</label></div>
+          <div class="check-opt"><input type="checkbox" id="tskAudCSMs"><label for="tskAudCSMs">CSMs</label></div>
+          <div class="check-opt"><input type="checkbox" id="tskAudAMs"><label for="tskAudAMs">AMs</label></div>
+          <div class="check-opt"><input type="checkbox" id="tskAudTAMs"><label for="tskAudTAMs">TAMs</label></div>
+          <div class="check-opt"><input type="checkbox" id="tskAudAEs"><label for="tskAudAEs">AEs</label></div>
+          <div class="check-opt"><input type="checkbox" id="tskAudBDRs"><label for="tskAudBDRs">BDRs</label></div>
+          <div class="check-opt"><input type="checkbox" id="tskAudOther"><label for="tskAudOther">Other:</label><input type="text" class="other-input" id="tskAudOtherText" placeholder=""></div>
+        </div>
+        <div class="field-error">Please select at least one team.</div>
+      </div>
+
+      <div class="q-card" id="qTskDesc">
+        <label class="q-label">Please Describe the Request <span class="req">*</span></label>
+        <textarea id="tskDesc" placeholder="Your answer"></textarea>
+        <div class="field-error">Please describe the request.</div>
+      </div>
+
+      <div class="q-card">
+        <label class="q-label">Any pre-work that needs to be done? <span class="req">*</span></label>
+        <input type="text" id="tskPrework" placeholder="Your answer">
+      </div>
+
+      <div class="q-card">
+        <label class="q-label">Important Dates / Additional Details / Key Takeaways <span class="req">*</span></label>
+        <input type="text" id="tskDates" placeholder="Your answer">
+      </div>
+
+      <div class="q-card">
+        <label class="q-label">Please link to the folder of any Supporting Documents</label>
+        <input type="text" id="tskDocs" placeholder="Your answer">
+      </div>
+
+    </div><!-- /section-body -->
+
+    <div class="nav-bar">
+      <button class="btn-back" onclick="goPage1()">Back</button>
+      <button class="btn-submit" onclick="submitForm()">Submit</button>
+    </div>
+  </div><!-- /page2Task -->
+
+  <!-- SUCCESS -->
+  <div class="success-screen" id="successScreen">
+    <div class="success-check">✓</div>
+    <h2>Your response has been recorded.</h2>
+    <div class="intake-id-badge" id="successId">SE-20260619-001</div>
+    <p>A copy of your response has been emailed to you. Our enablement team will review your submission and contact you shortly.</p>
+    <button class="btn-another" onclick="resetForm()">Submit another response</button>
   </div>
 
-</div>
+</div><!-- /page -->
 
 <script>
-// ── STATE ───────────────────────────────────────────────────
-const state = { team: null, type: null, urgency: null };
-
-// ── GOOGLE APPS SCRIPT WEB APP URL ──────────────────────────
-// After deploying your Apps Script as a Web App, paste its URL here
-// To connect to Apps Script: deploy your script as a Web App and paste the URL below
-// Extensions > Apps Script > Deploy > New deployment > Web App > Anyone > Deploy
-// Leave as-is to run in standalone demo mode
 const APPS_SCRIPT_URL = "YOUR_APPS_SCRIPT_WEB_APP_URL";
 
-// ── TEAM DEFAULTS ────────────────────────────────────────────
-const TEAM_CONFIG = {
-  "Sales": {
-    banner:   "Pre-filled for Sales. We have set the most common defaults for your team.",
-    desc:     "Sales teams typically request recorded demos, competitive battlecards, and onboarding modules.",
-    type:     "Recorded",
-    urgency:  "0-1 month",
-    audience: "Sales Team"
-  },
-  "CS": {
-    banner:   "Pre-filled for Customer Success.",
-    desc:     "CS teams typically request live training sessions, onboarding walkthroughs, and refresher content.",
-    type:     "Live",
-    urgency:  "1 month+",
-    audience: "Customer Success"
-  },
-  "Marketing": {
-    banner:   "Pre-filled for Marketing.",
-    desc:     "Marketing teams typically request task or asset support — decks, one-pagers, co-branded content.",
-    type:     "Task",
-    urgency:  "1 month+",
-    audience: "Marketing"
-  },
-  "Product": {
-    banner:   "Pre-filled for Product.",
-    desc:     "Product teams typically request feature explainer content or internal training materials.",
-    type:     "Recorded",
-    urgency:  "1 month+",
-    audience: "Product Team"
-  },
-  "Other": {
-    banner:   "No team defaults applied.",
-    desc:     "Fill in each field based on your request.",
-    type:     null,
-    urgency:  null,
-    audience: ""
-  }
-};
-
-// ── TEAM SELECTION ───────────────────────────────────────────
-function selectTeam(team) {
-  state.team = team;
-  document.querySelectorAll(".team-pill").forEach(p => p.classList.remove("active"));
-  document.querySelector(`[data-team="${team}"]`).classList.add("active");
-
-  const cfg = TEAM_CONFIG[team];
-  const banner = document.getElementById("teamBanner");
-  document.getElementById("teamBannerTitle").textContent = cfg.banner;
-  document.getElementById("teamBannerDesc").textContent  = cfg.desc;
-  banner.classList.add("visible");
-
-  // Apply pre-fills
-  if (cfg.type)     selectType(cfg.type);
-  if (cfg.urgency)  selectUrgency(cfg.urgency);
-  if (cfg.audience) document.getElementById("input-audience").value = cfg.audience;
+// ── NAVIGATION ────────────────────────────────────────────────
+function goPage1() {
+  hide("page2Recorded"); hide("page2Live"); hide("page2Task");
+  show("page1");
+  setProgress(33);
 }
 
-function selectType(val) {
-  state.type = val;
-  document.querySelectorAll(".type-card").forEach(c => c.classList.remove("selected"));
-  const card = document.querySelector(`[data-val="${val}"]`);
-  if (card) card.classList.add("selected");
-}
-
-function selectUrgency(val) {
-  state.urgency = val;
-  document.querySelectorAll(".urgency-opt").forEach(o => o.classList.remove("selected"));
-  const opt = document.querySelector(`.urgency-opt[data-val="${val}"]`);
-  if (opt) opt.classList.add("selected");
-}
-
-// ── VALIDATION ───────────────────────────────────────────────
-function validate() {
+function goPage2() {
+  // Validate page 1
   let valid = true;
+  const email = val("inputEmail");
+  const type  = getRadio("type");
+  setErr("qEmail",  !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/));
+  setErr("qType",   !type);
+  if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) || !type) return;
 
-  const email = document.getElementById("input-email").value.trim();
-  setFieldError("field-email", !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/));
-  if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) valid = false;
-
-  setFieldError("field-type", !state.type);
-  if (!state.type) valid = false;
-
-  const title = document.getElementById("input-title").value.trim();
-  setFieldError("field-title", !title);
-  if (!title) valid = false;
-
-  const audience = document.getElementById("input-audience").value.trim();
-  setFieldError("field-audience", !audience);
-  if (!audience) valid = false;
-
-  setFieldError("field-urgency", !state.urgency);
-  if (!state.urgency) valid = false;
-
-  const summary = document.getElementById("input-summary").value.trim();
-  setFieldError("field-summary", !summary);
-  if (!summary) valid = false;
-
-  return valid;
+  hide("page1");
+  if (type === "Recorded") { show("page2Recorded"); }
+  else if (type === "Live") { show("page2Live"); }
+  else { show("page2Task"); }
+  setProgress(66);
+  window.scrollTo(0, 0);
 }
 
-function setFieldError(fieldId, hasError) {
-  const el = document.getElementById(fieldId);
-  if (hasError) el.classList.add("has-error");
-  else el.classList.remove("has-error");
-}
-
-// ── SUBMIT ───────────────────────────────────────────────────
+// ── SUBMIT ────────────────────────────────────────────────────
 function submitForm() {
-  if (!validate()) return;
+  const type = getRadio("type");
+  let valid  = true;
 
-  const btn = document.getElementById("btnSubmit");
-  btn.disabled = true;
-  btn.textContent = "Submitting…";
+  if (type === "Recorded") {
+    if (!val("recTitle"))               { setErr("qRecTitle", true);    valid = false; } else setErr("qRecTitle", false);
+    if (!getChecked("recCrit").length)  { setErr("qRecCriteria", true); valid = false; } else setErr("qRecCriteria", false);
+    if (!getChecked("recFoc").length)   { setErr("qRecFocus", true);    valid = false; } else setErr("qRecFocus", false);
+    if (!val("recWhy"))                 { setErr("qRecWhy", true);      valid = false; } else setErr("qRecWhy", false);
+    if (!val("recSummary"))             { setErr("qRecSummary", true);  valid = false; } else setErr("qRecSummary", false);
+    if (!getRadio("recNewRef"))         { setErr("qRecNewRef", true);   valid = false; } else setErr("qRecNewRef", false);
+    if (!getChecked("recAud").length)   { setErr("qRecAudience", true); valid = false; } else setErr("qRecAudience", false);
+    if (!getRadio("recUrgency"))        { setErr("qRecUrgency", true);  valid = false; } else setErr("qRecUrgency", false);
+  } else if (type === "Live") {
+    if (!val("livTitle"))               { setErr("qLivTitle", true);    valid = false; } else setErr("qLivTitle", false);
+    if (!getChecked("livCrit").length)  { setErr("qLivCriteria", true); valid = false; } else setErr("qLivCriteria", false);
+    if (!getChecked("livFoc").length)   { setErr("qLivFocus", true);    valid = false; } else setErr("qLivFocus", false);
+    if (!val("livSummary"))             { setErr("qLivSummary", true);  valid = false; } else setErr("qLivSummary", false);
+    if (!getRadio("livNewRef"))         { setErr("qLivNewRef", true);   valid = false; } else setErr("qLivNewRef", false);
+    if (!getChecked("livAud").length)   { setErr("qLivAudience", true); valid = false; } else setErr("qLivAudience", false);
+    if (!getRadio("livUrgency"))        { setErr("qLivUrgency", true);  valid = false; } else setErr("qLivUrgency", false);
+  } else {
+    if (!getChecked("tskAud").length)   { setErr("qTskAudience", true); valid = false; } else setErr("qTskAudience", false);
+    if (!val("tskDesc"))                { setErr("qTskDesc", true);     valid = false; } else setErr("qTskDesc", false);
+  }
 
-  const now   = new Date();
-  const pad   = n => String(n).padStart(2, "0");
-  const date  = `${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}`;
-  const seq   = String(Math.floor(Math.random() * 900) + 100); // placeholder until server assigns
-  const id    = `SE-${date}-${seq}`;
+  if (!valid) return;
+
+  const now  = new Date();
+  const pad  = n => String(n).padStart(2, "0");
+  const date = now.getFullYear() + "" + pad(now.getMonth()+1) + "" + pad(now.getDate());
+  const id   = "SE-" + date + "-" + String(Math.floor(Math.random()*900)+100);
 
   const payload = {
     source:   "portal",
-    team:     state.team || "General",
-    email:    document.getElementById("input-email").value.trim(),
-    type:     state.type,
-    title:    document.getElementById("input-title").value.trim(),
-    audience: document.getElementById("input-audience").value.trim(),
-    urgency:  state.urgency,
-    summary:  document.getElementById("input-summary").value.trim(),
-    id:       id
+    id:       id,
+    email:    val("inputEmail"),
+    type:     type,
+    title:    type === "Recorded" ? val("recTitle") : type === "Live" ? val("livTitle") : "Task Request",
+    audience: type === "Recorded" ? getChecked("recAud").join(", ") : type === "Live" ? getChecked("livAud").join(", ") : getChecked("tskAud").join(", "),
+    urgency:  type === "Recorded" ? getRadio("recUrgency") : type === "Live" ? getRadio("livUrgency") : "0-1 month",
+    summary:  type === "Recorded" ? val("recSummary") : type === "Live" ? val("livSummary") : val("tskDesc"),
+    criteria: type === "Recorded" ? getChecked("recCrit").join(", ") : getChecked("livCrit").join(", "),
+    focus:    type === "Recorded" ? getChecked("recFoc").join(", ")  : getChecked("livFoc").join(", "),
+    newRef:   type === "Recorded" ? getRadio("recNewRef") : getRadio("livNewRef"),
+    people:   type === "Recorded" ? val("recPeople") : val("livPresenters"),
+    why:      type === "Recorded" ? val("recWhy") : "",
+    others:   type === "Live"     ? val("livOthers") : "",
+    prework:  type === "Task"     ? val("tskPrework") : "",
+    dates:    type === "Task"     ? val("tskDates") : "",
+    docs:     type === "Task"     ? val("tskDocs") : ""
   };
 
-  // POST to your Apps Script Web App
-  // For local testing the form shows success immediately
   if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== "YOUR_APPS_SCRIPT_WEB_APP_URL") {
-    fetch(APPS_SCRIPT_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    }).then(() => showSuccess(id)).catch(() => showSuccess(id));
-  } else {
-    // Demo mode — show success immediately
-    setTimeout(() => showSuccess(id), 800);
+    fetch(APPS_SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(payload) });
   }
-}
 
-function showSuccess(id) {
+  setProgress(100);
+  hide("page2Recorded"); hide("page2Live"); hide("page2Task");
   document.getElementById("successId").textContent = id;
-  document.getElementById("formCard").style.display = "none";
-  document.getElementById("successCard").classList.add("visible");
-  document.getElementById("trackerSection").style.display = "none";
+  show("successScreen");
+  window.scrollTo(0, 0);
 }
 
 function resetForm() {
-  document.getElementById("formCard").style.display = "block";
-  document.getElementById("successCard").classList.remove("visible");
-  document.getElementById("trackerSection").style.display = "block";
-  // Reset fields
-  state.type = null; state.urgency = null;
-  document.querySelectorAll(".type-card, .urgency-opt").forEach(el => el.classList.remove("selected"));
-  ["input-email","input-title","input-audience","input-summary"].forEach(id => document.getElementById(id).value = "");
-  document.getElementById("btnSubmit").disabled = false;
-  document.getElementById("btnSubmit").textContent = "Submit request";
+  document.querySelectorAll("input[type=text], input[type=email], textarea").forEach(el => el.value = "");
+  document.querySelectorAll("input[type=radio], input[type=checkbox]").forEach(el => el.checked = false);
+  hide("successScreen");
+  show("page1");
+  setProgress(33);
+  window.scrollTo(0, 0);
 }
 
-// ── STATUS TRACKER ────────────────────────────────────────────
-// In production, this fetches from your Apps Script Web App which queries Asana.
-// Here we show a demo based on the ID pattern.
-function lookupStatus() {
-  const id = document.getElementById("trackInput").value.trim().toUpperCase();
-  if (!id.match(/^SE-\d{8}-\d{3}$/)) {
-    alert("Please enter a valid Intake ID in the format SE-YYYYMMDD-NNN");
-    return;
-  }
+// ── HELPERS ───────────────────────────────────────────────────
+function val(id)       { return (document.getElementById(id)?.value || "").trim(); }
+function show(id)      { document.getElementById(id).style.display = "block"; }
+function hide(id)      { document.getElementById(id).style.display = "none"; }
+function setErr(id, e) { document.getElementById(id)?.classList.toggle("has-error", e); }
+function setProgress(pct) { document.getElementById("progressFill").style.width = pct + "%"; }
 
-  // Demo: derive a fake status from the ID number so each ID looks unique
-  const seqNum = parseInt(id.split("-")[2]);
-  const statuses = ["New", "In Review", "Accepted", "In Progress", "Done"];
-  const statusIdx = seqNum % statuses.length;
-  const status = statuses[statusIdx];
-  const title  = "Your enablement request";
-
-  document.getElementById("tr-id").textContent    = id;
-  document.getElementById("tr-title").textContent = title;
-
-  const badge = document.getElementById("tr-badge");
-  badge.textContent = status;
-  badge.className   = "status-badge status-" + status.toLowerCase().replace(" ", "-");
-
-  const timelineEl = document.getElementById("tr-timeline");
-  const allSteps   = ["New", "In Review", "Accepted", "In Progress", "Done"];
-  timelineEl.innerHTML = allSteps.map((step, i) => {
-    const done    = i < statusIdx;
-    const current = i === statusIdx;
-    const dotCls  = done ? "tl-dot done" : current ? "tl-dot current" : "tl-dot future";
-    const date    = done || current ? formatDateShort(new Date(Date.now() - (statusIdx - i) * 3 * 24 * 60 * 60 * 1000)) : "";
-    return `<div class="tl-step"><div class="${dotCls}"></div><div><div class="tl-label">${step}</div>${date ? `<div class="tl-date">${date}</div>` : ""}</div></div>`;
-  }).join("");
-
-  document.getElementById("trackerResult").classList.add("visible");
+function getRadio(name) {
+  const el = document.querySelector("input[name='" + name + "']:checked");
+  return el ? el.value : "";
 }
 
-function formatDateShort(d) {
-  const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-  return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+function getChecked(prefix) {
+  const results = [];
+  document.querySelectorAll("input[type=checkbox][id^='" + prefix + "']").forEach(cb => {
+    if (!cb.checked) return;
+    if (cb.id.endsWith("Other")) {
+      const otherText = document.getElementById(cb.id + "Text")?.value.trim();
+      if (otherText) results.push(otherText);
+    } else {
+      results.push(cb.nextElementSibling?.textContent.trim() || cb.id);
+    }
+  });
+  return results;
 }
 </script>
 </body>
