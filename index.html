@@ -842,9 +842,9 @@ function submitForm() {
     docs:     type==="Task"     ? val("tskDocs") : ""
   };
 
-  if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== "https://script.google.com/macros/s/AKfycbxlr9znswnvPnXYH7X0ac1ZVKyr2TUM__Cz34L2FyXouuBDG-2D4WGTftlN9Fs5ZaAo/exec") {
-    fetch(APPS_SCRIPT_URL, { method:"POST", mode:"no-cors", body:JSON.stringify(payload) });
-  }
+  // Submit to Apps Script Web App
+  fetch(APPS_SCRIPT_URL, { method:"POST", mode:"no-cors", body:JSON.stringify(payload) })
+    .catch(function() {}); // no-cors means we won't get a response — that is expected
 
   // Populate success screen
   document.getElementById("successId").textContent      = id;
