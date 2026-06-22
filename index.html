@@ -3,543 +3,884 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sales Enablement Intake Form</title>
+<title>Sales Enablement Intake — Acquia</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
   :root {
-    --blue: #4B3FC7;
-    --blue-dark: #3730a3;
-    --blue-light: #ede9fe;
-    --surface: #ffffff;
-    --surface-2: #f8f8fc;
-    --border: #e4e4ef;
-    --text: #1a1a2e;
-    --text-2: #4a4a6a;
-    --text-3: #8888aa;
-    --red: #dc2626;
-    --green: #16a34a;
-    --radius: 12px;
+    --ink:       #0f1117;
+    --ink-2:     #3d4151;
+    --ink-3:     #7c8299;
+    --ink-4:     #b0b6c8;
+    --bg:        #f5f6fa;
+    --surface:   #ffffff;
+    --border:    #e3e6ef;
+    --border-2:  #c8cdd e;
+    --acquia:    #1B4DFF;
+    --acquia-d:  #1340d4;
+    --acquia-l:  #eef2ff;
+    --acquia-ll: #f7f8ff;
+    --red:       #e5303a;
+    --red-l:     #fff0f0;
+    --green:     #12a057;
+    --green-l:   #f0faf5;
+    --radius:    10px;
+    --radius-lg: 16px;
+    --shadow:    0 1px 3px rgba(15,17,23,0.06), 0 1px 2px rgba(15,17,23,0.04);
+    --shadow-md: 0 4px 16px rgba(15,17,23,0.08);
   }
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { min-height: 100vh; font-family: 'Google Sans', Roboto, -apple-system, sans-serif; background: var(--surface-2); color: var(--text); line-height: 1.6; }
 
-  /* ── Page layout ── */
-  .page { max-width: 680px; margin: 0 auto; padding: 24px 16px 80px; }
-
-  /* ── Header card (purple bar like Google Forms) ── */
-  .form-header { background: var(--surface); border-radius: var(--radius) var(--radius) 0 0; border-top: 10px solid var(--blue); border: 1px solid var(--border); border-top: 10px solid var(--blue); padding: 24px 28px 20px; margin-bottom: 12px; }
-  .form-header h1 { font-size: 28px; font-weight: 400; color: var(--text); margin-bottom: 8px; }
-  .form-header p { font-size: 14px; color: var(--text-2); line-height: 1.6; }
-  .form-header .required-note { font-size: 13px; color: var(--red); margin-top: 12px; }
-
-  /* ── Section header (colored banner like Google Forms sections) ── */
-  .section-banner { background: var(--blue); color: white; border-radius: var(--radius) var(--radius) 0 0; padding: 16px 24px 14px; margin-top: 12px; }
-  .section-banner h2 { font-size: 18px; font-weight: 500; }
-  .section-banner p { font-size: 13px; opacity: 0.85; margin-top: 4px; }
-  .section-body { background: var(--surface); border: 1px solid var(--border); border-top: none; border-radius: 0 0 var(--radius) var(--radius); padding: 20px 24px 24px; margin-bottom: 12px; }
-
-  /* ── Question card ── */
-  .q-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; }
-  .q-card.hidden { display: none; }
-  .q-label { font-size: 15px; color: var(--text); margin-bottom: 12px; display: block; }
-  .q-label .req { color: var(--red); margin-left: 3px; }
-
-  /* ── Text inputs ── */
-  .q-card input[type="text"],
-  .q-card input[type="email"],
-  .q-card textarea {
-    width: 100%; border: none; border-bottom: 1px solid var(--border);
-    padding: 6px 0; font-size: 14px; color: var(--text); outline: none;
-    background: transparent; font-family: inherit; transition: border-color 0.15s;
+  html, body {
+    min-height: 100vh;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
   }
-  .q-card input[type="text"]:focus,
-  .q-card input[type="email"]:focus,
-  .q-card textarea:focus { border-bottom-color: var(--blue); }
-  .q-card textarea { resize: vertical; min-height: 80px; }
-  .q-placeholder { font-size: 13px; color: var(--text-3); margin-top: 4px; }
 
-  /* ── Radio options ── */
-  .radio-list { display: flex; flex-direction: column; gap: 4px; }
-  .radio-opt { display: flex; align-items: flex-start; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer; transition: background 0.1s; }
-  .radio-opt:hover { background: var(--surface-2); }
-  .radio-opt input[type="radio"] { margin-top: 2px; accent-color: var(--blue); flex-shrink: 0; width: 16px; height: 16px; }
-  .radio-opt label { font-size: 14px; color: var(--text-2); cursor: pointer; line-height: 1.5; }
+  /* ── Shell ── */
+  .shell {
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+  }
 
-  /* ── Checkbox options ── */
-  .check-list { display: flex; flex-direction: column; gap: 4px; }
-  .check-opt { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer; transition: background 0.1s; }
-  .check-opt:hover { background: var(--surface-2); }
-  .check-opt input[type="checkbox"] { accent-color: var(--blue); flex-shrink: 0; width: 16px; height: 16px; }
-  .check-opt label { font-size: 14px; color: var(--text-2); cursor: pointer; }
-  .other-input { border: none; border-bottom: 1px solid var(--border); padding: 2px 0; font-size: 14px; color: var(--text); outline: none; flex: 1; background: transparent; font-family: inherit; }
-  .other-input:focus { border-bottom-color: var(--blue); }
+  /* ── Top bar ── */
+  .topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .topbar-brand { display: flex; align-items: center; gap: 10px; }
+  .topbar-logo {
+    width: 28px; height: 28px;
+    background: var(--acquia);
+    border-radius: 7px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .topbar-logo svg { width: 16px; height: 16px; fill: white; }
+  .topbar-name { font-size: 14px; font-weight: 600; color: var(--ink); letter-spacing: -0.2px; }
+  .topbar-name span { color: var(--acquia); }
+  .topbar-right { font-size: 13px; color: var(--ink-3); }
 
-  /* ── Navigation buttons ── */
-  .nav-bar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; margin-top: 12px; }
-  .btn-next { background: var(--blue); color: white; border: none; border-radius: 6px; padding: 10px 28px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.15s; font-family: inherit; }
-  .btn-next:hover { background: var(--blue-dark); }
-  .btn-back { background: transparent; color: var(--blue); border: none; padding: 10px 16px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: inherit; }
-  .btn-back:hover { background: var(--blue-light); border-radius: 6px; }
-  .btn-submit { background: var(--blue); color: white; border: none; border-radius: 6px; padding: 10px 28px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: inherit; }
-  .btn-submit:hover { background: var(--blue-dark); }
-  .btn-clear { background: transparent; color: var(--blue); border: none; padding: 10px 16px; font-size: 14px; cursor: pointer; font-family: inherit; }
+  /* ── Progress strip ── */
+  .progress-strip { height: 3px; background: var(--border); }
+  .progress-fill { height: 100%; background: var(--acquia); transition: width 0.4s cubic-bezier(.4,0,.2,1); }
 
-  /* ── Error state ── */
-  .q-card.has-error { border-color: var(--red); }
-  .field-error { font-size: 12px; color: var(--red); margin-top: 6px; display: none; }
-  .q-card.has-error .field-error { display: block; }
+  /* ── Main ── */
+  .main { padding: 40px 16px 80px; }
+  .form-wrap { max-width: 620px; margin: 0 auto; }
 
-  /* ── Progress bar ── */
-  .progress-bar { height: 4px; background: var(--border); border-radius: 2px; margin-bottom: 16px; overflow: hidden; }
-  .progress-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.3s; }
+  /* ── Step indicator ── */
+  .steps { display: flex; align-items: center; gap: 0; margin-bottom: 32px; }
+  .step { display: flex; align-items: center; gap: 8px; }
+  .step-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    font-size: 12px; font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+    border: 1.5px solid var(--border);
+    color: var(--ink-3);
+    background: var(--surface);
+    transition: all 0.2s;
+  }
+  .step-num.active { background: var(--acquia); border-color: var(--acquia); color: white; }
+  .step-num.done { background: var(--green); border-color: var(--green); color: white; }
+  .step-label { font-size: 13px; color: var(--ink-3); font-weight: 500; }
+  .step-label.active { color: var(--ink); }
+  .step-connector { flex: 1; height: 1px; background: var(--border); margin: 0 12px; min-width: 24px; }
+
+  /* ── Section heading ── */
+  .section-head { margin-bottom: 20px; }
+  .section-head h2 { font-size: 20px; font-weight: 600; color: var(--ink); letter-spacing: -0.3px; margin-bottom: 4px; }
+  .section-head p { font-size: 14px; color: var(--ink-2); }
+
+  /* ── Type cards (page 1 branch selector) ── */
+  .type-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 12px; }
+  .type-card {
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 16px 18px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex; gap: 14px; align-items: flex-start;
+    background: var(--surface);
+    position: relative;
+  }
+  .type-card:hover { border-color: var(--acquia); background: var(--acquia-ll); }
+  .type-card.selected { border-color: var(--acquia); background: var(--acquia-l); }
+  .type-card input[type="radio"] { position: absolute; opacity: 0; pointer-events: none; }
+  .type-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+    background: var(--bg);
+  }
+  .type-card.selected .type-icon { background: white; }
+  .type-body { flex: 1; }
+  .type-title { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 3px; }
+  .type-desc { font-size: 13px; color: var(--ink-2); line-height: 1.5; }
+  .type-check {
+    width: 20px; height: 20px; border-radius: 50%;
+    border: 1.5px solid var(--border);
+    flex-shrink: 0; margin-top: 2px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .type-card.selected .type-check {
+    background: var(--acquia); border-color: var(--acquia);
+  }
+  .type-check::after {
+    content: '';
+    width: 6px; height: 6px; border-radius: 50%;
+    background: white;
+    display: none;
+  }
+  .type-card.selected .type-check::after { display: block; }
+
+  /* ── Field group ── */
+  .field-group { margin-bottom: 20px; }
+  .field-label {
+    font-size: 13px; font-weight: 500; color: var(--ink-2);
+    display: block; margin-bottom: 8px;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .field-label .req { color: var(--red); font-size: 12px; }
+
+  /* ── Inputs ── */
+  .field-input, .field-textarea, .field-select {
+    width: 100%;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    font-size: 14px; color: var(--ink);
+    background: var(--surface);
+    outline: none;
+    font-family: inherit;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .field-input:focus, .field-textarea:focus, .field-select:focus {
+    border-color: var(--acquia);
+    box-shadow: 0 0 0 3px rgba(27,77,255,0.08);
+  }
+  .field-textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+  .field-group.has-error .field-input,
+  .field-group.has-error .field-textarea { border-color: var(--red); }
+  .field-group.has-error .field-input:focus,
+  .field-group.has-error .field-textarea:focus { box-shadow: 0 0 0 3px rgba(229,48,58,0.08); }
+  .field-error { font-size: 12px; color: var(--red); margin-top: 5px; display: none; }
+  .field-group.has-error .field-error { display: block; }
+
+  /* ── Checkbox / radio pill groups ── */
+  .pill-grid { display: flex; flex-direction: column; gap: 6px; }
+  .pill-opt {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.12s;
+    background: var(--surface);
+    user-select: none;
+  }
+  .pill-opt:hover { border-color: var(--acquia); background: var(--acquia-ll); }
+  .pill-opt.checked { border-color: var(--acquia); background: var(--acquia-l); }
+  .pill-opt input { position: absolute; opacity: 0; pointer-events: none; }
+  .pill-box {
+    width: 18px; height: 18px; border-radius: 4px;
+    border: 1.5px solid var(--border);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.12s;
+    background: white;
+  }
+  .pill-opt.checked .pill-box { background: var(--acquia); border-color: var(--acquia); }
+  .pill-box-radio {
+    width: 18px; height: 18px; border-radius: 50%;
+    border: 1.5px solid var(--border);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.12s;
+    background: white;
+  }
+  .pill-opt.checked .pill-box-radio { border-color: var(--acquia); }
+  .pill-box-radio::after {
+    content: '';
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--acquia);
+    display: none;
+  }
+  .pill-opt.checked .pill-box-radio::after { display: block; }
+  .pill-box svg { display: none; }
+  .pill-opt.checked .pill-box svg { display: block; }
+  .pill-text { font-size: 13px; color: var(--ink-2); line-height: 1.4; flex: 1; }
+  .pill-opt.checked .pill-text { color: var(--ink); font-weight: 500; }
+  .other-inline {
+    border: none; border-bottom: 1.5px solid var(--border);
+    font-size: 13px; color: var(--ink); outline: none;
+    background: transparent; font-family: inherit; flex: 1; padding: 0 4px;
+  }
+  .other-inline:focus { border-bottom-color: var(--acquia); }
+
+  /* ── Two column grid for some fields ── */
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 500px) { .field-row { grid-template-columns: 1fr; } }
+
+  /* ── Divider ── */
+  .form-divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+  /* ── Page header ── */
+  .page-header {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px 28px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow);
+  }
+  .page-header h1 { font-size: 22px; font-weight: 600; color: var(--ink); letter-spacing: -0.4px; margin-bottom: 6px; }
+  .page-header p { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+  .req-note { font-size: 12px; color: var(--red); margin-top: 10px; }
+
+  /* ── Branch banner ── */
+  .branch-banner {
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    padding: 18px 24px;
+    margin-bottom: 0;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .branch-banner.recorded { background: linear-gradient(135deg, #1B4DFF 0%, #4B7BFF 100%); }
+  .branch-banner.live     { background: linear-gradient(135deg, #7C3AED 0%, #A855F7 100%); }
+  .branch-banner.task     { background: linear-gradient(135deg, #0891B2 0%, #06B6D4 100%); }
+  .branch-icon { font-size: 28px; }
+  .branch-title { font-size: 17px; font-weight: 600; color: white; }
+  .branch-sub   { font-size: 13px; color: rgba(255,255,255,0.8); margin-top: 2px; }
+  .branch-body {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+  }
+
+  /* ── Nav bar ── */
+  .nav-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 0;
+    margin-top: 8px;
+  }
+  .btn-back {
+    background: transparent; border: 1.5px solid var(--border);
+    border-radius: var(--radius); padding: 10px 20px;
+    font-size: 14px; font-weight: 500; color: var(--ink-2);
+    cursor: pointer; font-family: inherit; transition: all 0.15s;
+  }
+  .btn-back:hover { border-color: var(--ink-3); color: var(--ink); }
+  .btn-next, .btn-submit {
+    background: var(--acquia); color: white;
+    border: none; border-radius: var(--radius);
+    padding: 10px 28px;
+    font-size: 14px; font-weight: 600;
+    cursor: pointer; font-family: inherit;
+    transition: background 0.15s;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .btn-next:hover, .btn-submit:hover { background: var(--acquia-d); }
+  .btn-next svg, .btn-submit svg { width: 16px; height: 16px; fill: white; }
 
   /* ── Success screen ── */
-  .success-screen { display: none; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 48px 32px; text-align: center; }
+  .success-screen {
+    display: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 56px 40px;
+    text-align: center;
+    box-shadow: var(--shadow-md);
+  }
   .success-screen.visible { display: block; }
-  .success-check { width: 56px; height: 56px; background: var(--blue-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 26px; }
-  .success-screen h2 { font-size: 22px; font-weight: 400; color: var(--text); margin-bottom: 8px; }
-  .intake-id-badge { display: inline-block; background: var(--blue-light); color: var(--blue); border-radius: 6px; padding: 6px 18px; font-size: 15px; font-weight: 500; margin: 12px 0 16px; letter-spacing: 0.04em; }
-  .success-screen p { font-size: 14px; color: var(--text-2); max-width: 400px; margin: 0 auto 24px; }
-  .btn-another { background: transparent; border: 1px solid var(--border); border-radius: 6px; padding: 10px 24px; font-size: 14px; color: var(--blue); cursor: pointer; font-family: inherit; }
-  .btn-another:hover { background: var(--blue-light); }
+  .success-icon {
+    width: 64px; height: 64px;
+    background: var(--green-l);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 28px;
+  }
+  .success-screen h2 { font-size: 24px; font-weight: 600; color: var(--ink); letter-spacing: -0.4px; margin-bottom: 8px; }
+  .intake-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--acquia-l); border: 1px solid #c7d4ff;
+    border-radius: 8px; padding: 8px 20px;
+    font-size: 15px; font-weight: 600; color: var(--acquia);
+    margin: 14px 0 20px; letter-spacing: 0.04em;
+  }
+  .success-screen p { font-size: 14px; color: var(--ink-2); max-width: 380px; margin: 0 auto 28px; line-height: 1.7; }
+  .success-meta { display: flex; justify-content: center; gap: 24px; margin-bottom: 28px; flex-wrap: wrap; }
+  .success-meta-item { font-size: 13px; color: var(--ink-3); }
+  .success-meta-item strong { color: var(--ink-2); display: block; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px; }
+  .btn-another {
+    background: transparent; border: 1.5px solid var(--border);
+    border-radius: var(--radius); padding: 10px 24px;
+    font-size: 14px; font-weight: 500; color: var(--ink-2);
+    cursor: pointer; font-family: inherit; transition: all 0.15s;
+  }
+  .btn-another:hover { border-color: var(--acquia); color: var(--acquia); background: var(--acquia-ll); }
 
-  /* ── Account bar (mimics Google Forms) ── */
-  .acct-bar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 24px; margin-bottom: 12px; font-size: 13px; color: var(--text-2); display: flex; align-items: center; gap: 8px; }
-  .acct-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); }
+  /* ── Email field ── */
+  .email-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+  }
 </style>
 </head>
 <body>
-<div class="page">
+<div class="shell">
 
-  <!-- Progress bar -->
-  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:33%"></div></div>
-
-  <!-- PAGE 1 -->
-  <div id="page1">
-
-    <!-- Header -->
-    <div class="form-header">
-      <h1>Sales Enablement Intake Form</h1>
-      <p>Please complete this form to request an Enablement Session or Task. Our enablement team will review your submission and contact you shortly.</p>
-      <div class="required-note">* Indicates required question</div>
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="topbar-brand">
+      <div class="topbar-logo">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+      </div>
+      <span class="topbar-name">Acquia <span>Enablement</span></span>
     </div>
+    <span class="topbar-right">Sales Enablement Intake</span>
+  </header>
 
-    <!-- Email -->
-    <div class="q-card" id="qEmail">
-      <label class="q-label">Email <span class="req">*</span></label>
-      <input type="email" id="inputEmail" placeholder="Your answer">
-      <div class="field-error">Please enter your work email.</div>
+  <!-- Progress strip -->
+  <div class="progress-strip"><div class="progress-fill" id="progressFill" style="width:33%"></div></div>
+
+  <main class="main">
+    <div class="form-wrap">
+
+      <!-- PAGE 1 -->
+      <div id="page1">
+
+        <!-- Steps -->
+        <div class="steps">
+          <div class="step"><div class="step-num active" id="s1">1</div><span class="step-label active">Request type</span></div>
+          <div class="step-connector"></div>
+          <div class="step"><div class="step-num" id="s2">2</div><span class="step-label" id="sl2">Details</span></div>
+          <div class="step-connector"></div>
+          <div class="step"><div class="step-num" id="s3">3</div><span class="step-label">Done</span></div>
+        </div>
+
+        <!-- Header -->
+        <div class="page-header">
+          <h1>Sales Enablement Intake Form</h1>
+          <p>Request an Enablement Session or Task. Our team reviews every submission and will follow up within 2 business days.</p>
+          <div class="req-note">* Required fields</div>
+        </div>
+
+        <!-- Email -->
+        <div class="email-card">
+          <div class="field-group" id="fgEmail">
+            <label class="field-label">Work email <span class="req">*</span></label>
+            <input class="field-input" type="email" id="inputEmail" placeholder="you@acquia.com">
+            <div class="field-error">Please enter a valid work email.</div>
+          </div>
+        </div>
+
+        <!-- Type selector -->
+        <div class="field-group" id="fgType">
+          <label class="field-label" style="margin-bottom:12px">What type of request is this? <span class="req">*</span></label>
+          <div class="type-grid">
+            <div class="type-card" id="tcRecorded" onclick="selectType('Recorded')">
+              <input type="radio" name="type" value="Recorded">
+              <div class="type-icon">🎬</div>
+              <div class="type-body">
+                <div class="type-title">Recorded Enablement Session</div>
+                <div class="type-desc">Ideal for product announcements or courses with a knowledge check. Offers on-demand, self-paced learning.</div>
+              </div>
+              <div class="type-check"></div>
+            </div>
+            <div class="type-card" id="tcLive" onclick="selectType('Live')">
+              <input type="radio" name="type" value="Live">
+              <div class="type-icon">🎤</div>
+              <div class="type-body">
+                <div class="type-title">Live Enablement Session</div>
+                <div class="type-desc">Best for sales skills, competitor updates, value selling, and live Q&A. Offers interactive, instructor-led learning.</div>
+              </div>
+              <div class="type-check"></div>
+            </div>
+            <div class="type-card" id="tcTask" onclick="selectType('Task')">
+              <input type="radio" name="type" value="Task">
+              <div class="type-icon">📋</div>
+              <div class="type-body">
+                <div class="type-title">Task Request</div>
+                <div class="type-desc">For specific enablement needs such as sales assets, process documentation, or resource updates.</div>
+              </div>
+              <div class="type-check"></div>
+            </div>
+          </div>
+          <div class="field-error" style="margin-top:8px">Please select a request type.</div>
+        </div>
+
+        <div class="nav-bar">
+          <div></div>
+          <button class="btn-next" onclick="goPage2()">
+            Continue
+            <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
+
+      </div><!-- /page1 -->
+
+      <!-- PAGE 2A — RECORDED -->
+      <div id="page2Recorded" style="display:none">
+        <div class="steps">
+          <div class="step"><div class="step-num done">✓</div><span class="step-label">Request type</span></div>
+          <div class="step-connector"></div>
+          <div class="step"><div class="step-num active">2</div><span class="step-label active">Session details</span></div>
+          <div class="step-connector"></div>
+          <div class="step"><div class="step-num">3</div><span class="step-label">Done</span></div>
+        </div>
+
+        <div class="branch-banner recorded">
+          <div class="branch-icon">🎬</div>
+          <div><div class="branch-title">Recorded Enablement Session</div><div class="branch-sub">On-demand, self-paced learning</div></div>
+        </div>
+        <div class="branch-body">
+
+          <div class="field-group" id="fgRecTitle">
+            <label class="field-label">Title of this training <span class="req">*</span></label>
+            <input class="field-input" type="text" id="recTitle" placeholder="e.g. Campaign Studio: AI Powered Campaign Building">
+            <div class="field-error">Please provide a title.</div>
+          </div>
+
+          <div class="field-row">
+            <div class="field-group" id="fgRecCriteria">
+              <label class="field-label">Productivity criteria <span class="req">*</span></label>
+              <div class="pill-grid">
+                <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="recCritDeal"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">Deal Value</span></label>
+                <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="recCritWin"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">Win Rate</span></label>
+                <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="recCritConv"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">Conversion Rate</span></label>
+                <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="recCritPipe"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">Pipeline Generation</span></label>
+              </div>
+              <div class="field-error">Select at least one.</div>
+            </div>
+
+            <div class="field-group" id="fgRecFocus">
+              <label class="field-label">Focus area <span class="req">*</span></label>
+              <div class="pill-grid">
+                <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="recFocProd"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">Product Knowledge</span></label>
+                <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="recFocSales"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">Sales Skills</span></label>
+                <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="recFocProc"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">Sales Process</span></label>
+                <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="recFocPart"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">Partner Selling</span></label>
+              </div>
+              <div class="field-error">Select at least one.</div>
+            </div>
+          </div>
+
+          <div class="field-group" id="fgRecWhy">
+            <label class="field-label">Why is this training important? <span class="req">*</span></label>
+            <textarea class="field-textarea" id="recWhy" placeholder="Motivate why sellers need to attend..."></textarea>
+            <div class="field-error">Please provide a reason.</div>
+          </div>
+
+          <div class="field-group" id="fgRecSummary">
+            <label class="field-label">Training summary (will populate event description) <span class="req">*</span></label>
+            <textarea class="field-textarea" id="recSummary" placeholder="Include a summary that will appear in the calendar invite..."></textarea>
+            <div class="field-error">Please provide a summary.</div>
+          </div>
+
+          <div class="field-row">
+            <div class="field-group" id="fgRecNewRef">
+              <label class="field-label">New or refresher? <span class="req">*</span></label>
+              <div class="pill-grid">
+                <label class="pill-opt" onclick="toggleRadioPill(this,'recNewRef')"><input type="radio" name="recNewRef" value="New"><div class="pill-box-radio"></div><span class="pill-text">New</span></label>
+                <label class="pill-opt" onclick="toggleRadioPill(this,'recNewRef')"><input type="radio" name="recNewRef" value="Refresher"><div class="pill-box-radio"></div><span class="pill-text">Refresher</span></label>
+              </div>
+              <div class="field-error">Please select one.</div>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">Presenters / deck creators <span class="req">*</span></label>
+              <input class="field-input" type="text" id="recPeople" placeholder="Names of all contributors">
+            </div>
+          </div>
+
+          <div class="field-group" id="fgRecAudience">
+            <label class="field-label">Who should be enrolled? <span class="req">*</span></label>
+            <div class="pill-grid">
+              <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="recAudSales"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">Sales Group (all 250 members — salesgrp@acquia)</span></label>
+              <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="recAudPresales"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">Presales</span></label>
+              <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="recAudCSMs"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">CSMs</span></label>
+              <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="recAudAMs"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">AMs</span></label>
+              <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="recAudAEs"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">AEs</span></label>
+              <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="recAudBDRs"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">BDRs</span></label>
+              <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="recAudTAMs"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">TAMs</span></label>
+            </div>
+            <div class="field-error">Select at least one audience.</div>
+          </div>
+
+          <div class="field-group" id="fgRecUrgency">
+            <label class="field-label">How soon will reps benefit? <span class="req">*</span></label>
+            <div class="pill-grid">
+              <label class="pill-opt" onclick="toggleRadioPill(this,'recUrgency')"><input type="radio" name="recUrgency" value="Yesterday"><div class="pill-box-radio"></div><span class="pill-text">Yesterday — this is already live, reps need to catch up</span></label>
+              <label class="pill-opt" onclick="toggleRadioPill(this,'recUrgency')"><input type="radio" name="recUrgency" value="Right now"><div class="pill-box-radio"></div><span class="pill-text">Right now — reps can use this immediately</span></label>
+              <label class="pill-opt" onclick="toggleRadioPill(this,'recUrgency')"><input type="radio" name="recUrgency" value="0-1 month"><div class="pill-box-radio"></div><span class="pill-text">0-1 month — reps will use this in coming weeks</span></label>
+              <label class="pill-opt" onclick="toggleRadioPill(this,'recUrgency')"><input type="radio" name="recUrgency" value="1 month+"><div class="pill-box-radio"></div><span class="pill-text">1 month+ — prepares reps for future activities</span></label>
+            </div>
+            <div class="field-error">Please select urgency.</div>
+          </div>
+
+        </div>
+        <div class="nav-bar">
+          <button class="btn-back" onclick="goPage1()">← Back</button>
+          <button class="btn-submit" onclick="submitForm()">Submit request</button>
+        </div>
+      </div><!-- /page2Recorded -->
+
+      <!-- PAGE 2B — LIVE -->
+      <div id="page2Live" style="display:none">
+        <div class="steps">
+          <div class="step"><div class="step-num done">✓</div><span class="step-label">Request type</span></div>
+          <div class="step-connector"></div>
+          <div class="step"><div class="step-num active">2</div><span class="step-label active">Session details</span></div>
+          <div class="step-connector"></div>
+          <div class="step"><div class="step-num">3</div><span class="step-label">Done</span></div>
+        </div>
+
+        <div class="branch-banner live">
+          <div class="branch-icon">🎤</div>
+          <div><div class="branch-title">Live Enablement Session</div><div class="branch-sub">Interactive, instructor-led learning</div></div>
+        </div>
+        <div class="branch-body">
+
+          <div class="field-group" id="fgLivTitle">
+            <label class="field-label">Title of this training <span class="req">*</span></label>
+            <input class="field-input" type="text" id="livTitle" placeholder="e.g. Cold Call Best Practices">
+            <div class="field-error">Please provide a title.</div>
+          </div>
+
+          <div class="field-row">
+            <div class="field-group" id="fgLivCriteria">
+              <label class="field-label">Productivity criteria <span class="req">*</span></label>
+              <div class="pill-grid">
+                <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="livCritDeal"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">Deal Value</span></label>
+                <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="livCritWin"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">Win Rate</span></label>
+                <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="livCritConv"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">Conversion Rate</span></label>
+                <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="livCritPipe"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">Pipeline Generation</span></label>
+              </div>
+              <div class="field-error">Select at least one.</div>
+            </div>
+
+            <div class="field-group" id="fgLivFocus">
+              <label class="field-label">Focus area <span class="req">*</span></label>
+              <div class="pill-grid">
+                <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="livFocProd"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">Product Knowledge</span></label>
+                <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="livFocSales"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">Sales Skills</span></label>
+                <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="livFocProc"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">Sales Process</span></label>
+                <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="livFocPart"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">Partner Selling</span></label>
+              </div>
+              <div class="field-error">Select at least one.</div>
+            </div>
+          </div>
+
+          <div class="field-group" id="fgLivSummary">
+            <label class="field-label">Training summary (will populate event description) <span class="req">*</span></label>
+            <textarea class="field-textarea" id="livSummary" placeholder="Include a summary that will appear in the calendar invite..."></textarea>
+            <div class="field-error">Please provide a summary.</div>
+          </div>
+
+          <div class="field-row">
+            <div class="field-group" id="fgLivNewRef">
+              <label class="field-label">New or refresher? <span class="req">*</span></label>
+              <div class="pill-grid">
+                <label class="pill-opt" onclick="toggleRadioPill(this,'livNewRef')"><input type="radio" name="livNewRef" value="New"><div class="pill-box-radio"></div><span class="pill-text">New</span></label>
+                <label class="pill-opt" onclick="toggleRadioPill(this,'livNewRef')"><input type="radio" name="livNewRef" value="Refresher"><div class="pill-box-radio"></div><span class="pill-text">Refresher</span></label>
+              </div>
+              <div class="field-error">Please select one.</div>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">Presenters / deck creators <span class="req">*</span></label>
+              <input class="field-input" type="text" id="livPresenters" placeholder="Names of all presenters">
+            </div>
+          </div>
+
+          <div class="field-group" id="fgLivAudience">
+            <label class="field-label">Who should we invite? <span class="req">*</span></label>
+            <div class="pill-grid">
+              <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="livAudSales"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">Sales Group (all 250 members — salesgrp@acquia)</span></label>
+              <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="livAudPresales"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">Presales</span></label>
+              <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="livAudCSMs"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">CSMs</span></label>
+              <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="livAudAMs"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">AMs</span></label>
+              <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="livAudAEs"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">AEs</span></label>
+              <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="livAudBDRs"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">BDRs</span></label>
+              <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="livAudTAMs"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">TAMs</span></label>
+            </div>
+            <div class="field-error">Select at least one audience.</div>
+          </div>
+
+          <div class="field-group" id="fgLivUrgency">
+            <label class="field-label">How soon will reps benefit? <span class="req">*</span></label>
+            <div class="pill-grid">
+              <label class="pill-opt" onclick="toggleRadioPill(this,'livUrgency')"><input type="radio" name="livUrgency" value="Yesterday"><div class="pill-box-radio"></div><span class="pill-text">Yesterday — this is already live, reps need to catch up</span></label>
+              <label class="pill-opt" onclick="toggleRadioPill(this,'livUrgency')"><input type="radio" name="livUrgency" value="Right now"><div class="pill-box-radio"></div><span class="pill-text">Right now — reps can use this immediately</span></label>
+              <label class="pill-opt" onclick="toggleRadioPill(this,'livUrgency')"><input type="radio" name="livUrgency" value="0-1 month"><div class="pill-box-radio"></div><span class="pill-text">0-1 month — reps will use this in coming weeks</span></label>
+              <label class="pill-opt" onclick="toggleRadioPill(this,'livUrgency')"><input type="radio" name="livUrgency" value="1 month+"><div class="pill-box-radio"></div><span class="pill-text">1 month+ — prepares reps for future activities</span></label>
+            </div>
+            <div class="field-error">Please select urgency.</div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Who else must be present?</label>
+            <input class="field-input" type="text" id="livOthers" placeholder="Be specific — used for scheduling">
+          </div>
+
+        </div>
+        <div class="nav-bar">
+          <button class="btn-back" onclick="goPage1()">← Back</button>
+          <button class="btn-submit" onclick="submitForm()">Submit request</button>
+        </div>
+      </div><!-- /page2Live -->
+
+      <!-- PAGE 2C — TASK -->
+      <div id="page2Task" style="display:none">
+        <div class="steps">
+          <div class="step"><div class="step-num done">✓</div><span class="step-label">Request type</span></div>
+          <div class="step-connector"></div>
+          <div class="step"><div class="step-num active">2</div><span class="step-label active">Task details</span></div>
+          <div class="step-connector"></div>
+          <div class="step"><div class="step-num">3</div><span class="step-label">Done</span></div>
+        </div>
+
+        <div class="branch-banner task">
+          <div class="branch-icon">📋</div>
+          <div><div class="branch-title">Task Request</div><div class="branch-sub">Sales assets, process docs, resource updates</div></div>
+        </div>
+        <div class="branch-body">
+
+          <div class="field-group" id="fgTskAudience">
+            <label class="field-label">Teams you are trying to reach <span class="req">*</span></label>
+            <div class="pill-grid">
+              <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="tskAudSales"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">Sales Group (all 250 members — salesgrp@acquia)</span></label>
+              <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="tskAudPresales"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">Presales</span></label>
+              <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="tskAudCSMs"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">CSMs</span></label>
+              <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="tskAudAMs"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">AMs</span></label>
+              <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="tskAudTAMs"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">TAMs</span></label>
+              <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="tskAudAEs"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">AEs</span></label>
+              <label class="pill-opt" onclick="togglePill(this)"><input type="checkbox" id="tskAudBDRs"><div class="pill-box"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div><span class="pill-text">BDRs</span></label>
+            </div>
+            <div class="field-error">Select at least one team.</div>
+          </div>
+
+          <div class="field-group" id="fgTskDesc">
+            <label class="field-label">Describe the request <span class="req">*</span></label>
+            <textarea class="field-textarea" id="tskDesc" placeholder="What do you need? What outcome should it drive?"></textarea>
+            <div class="field-error">Please describe the request.</div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Any pre-work needed? <span class="req">*</span></label>
+            <input class="field-input" type="text" id="tskPrework" placeholder="e.g. Review existing materials before kickoff">
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Important dates / key takeaways <span class="req">*</span></label>
+            <input class="field-input" type="text" id="tskDates" placeholder="e.g. Must be ready before Q3 kickoff, June 30">
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Supporting documents link</label>
+            <input class="field-input" type="text" id="tskDocs" placeholder="Google Drive, Confluence, or any shared folder link">
+          </div>
+
+        </div>
+        <div class="nav-bar">
+          <button class="btn-back" onclick="goPage1()">← Back</button>
+          <button class="btn-submit" onclick="submitForm()">Submit request</button>
+        </div>
+      </div><!-- /page2Task -->
+
+      <!-- SUCCESS -->
+      <div class="success-screen" id="successScreen">
+        <div class="success-icon">✓</div>
+        <h2>Request submitted</h2>
+        <div class="intake-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1B4DFF" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 12l2 2 4-4"/></svg>
+          <span id="successId">SE-20260619-001</span>
+        </div>
+        <p>Your request has been received. We will review it and follow up within 2 business days. Track updates in <strong>#enablement-intake</strong> on Slack.</p>
+        <div class="success-meta">
+          <div class="success-meta-item"><strong>Type</strong><span id="successType">—</span></div>
+          <div class="success-meta-item"><strong>Urgency</strong><span id="successUrgency">—</span></div>
+          <div class="success-meta-item"><strong>Audience</strong><span id="successAudience">—</span></div>
+        </div>
+        <button class="btn-another" onclick="resetForm()">Submit another request</button>
+      </div>
+
     </div>
+  </main>
 
-    <!-- Branch selector -->
-    <div class="q-card" id="qType">
-      <label class="q-label">Pick Recorded Product Enablement or Live Sales Enablement Training Session or Task Request <span class="req">*</span></label>
-      <div class="radio-list">
-        <div class="radio-opt">
-          <input type="radio" name="type" id="typeRecorded" value="Recorded">
-          <label for="typeRecorded">Recorded Enablement Session - Ideal for product announcements or courses with a knowledge check. Offers on-demand, self-paced learning.</label>
-        </div>
-        <div class="radio-opt">
-          <input type="radio" name="type" id="typeLive" value="Live">
-          <label for="typeLive">Live Enablement Session - Best for sales skills, competitor updates, value selling, and live Q&A. Offers interactive, instructor-led learning.</label>
-        </div>
-        <div class="radio-opt">
-          <input type="radio" name="type" id="typeTask" value="Task">
-          <label for="typeTask">Task request - For specific enablement needs such as sales assets, process documentation, or resource updates. Offers support through tailored deliverables.</label>
-        </div>
-      </div>
-      <div class="field-error">Please select a request type.</div>
-    </div>
-
-    <div class="nav-bar">
-      <div></div>
-      <button class="btn-next" onclick="goPage2()">Next</button>
-    </div>
-
-  </div><!-- /page1 -->
-
-  <!-- PAGE 2A — RECORDED -->
-  <div id="page2Recorded" style="display:none">
-    <div class="section-banner">
-      <h2>Recorded Enablement Session</h2>
-      <p>Ideal for product announcements or courses with a knowledge check. Offers on-demand, self-paced learning.</p>
-    </div>
-    <div class="section-body">
-
-      <div class="q-card" id="qRecTitle">
-        <label class="q-label">What is the title of this training? <span class="req">*</span></label>
-        <input type="text" id="recTitle" placeholder="Your answer">
-        <div class="field-error">Please provide a title.</div>
-      </div>
-
-      <div class="q-card" id="qRecCriteria">
-        <label class="q-label">What productivity criteria does this training meet? <span class="req">*</span></label>
-        <div class="check-list">
-          <div class="check-opt"><input type="checkbox" id="recCritDeal"><label for="recCritDeal">Deal Value</label></div>
-          <div class="check-opt"><input type="checkbox" id="recCritWin"><label for="recCritWin">Win Rate</label></div>
-          <div class="check-opt"><input type="checkbox" id="recCritConv"><label for="recCritConv">Conversion Rate</label></div>
-          <div class="check-opt"><input type="checkbox" id="recCritPipe"><label for="recCritPipe">Pipeline Generation</label></div>
-          <div class="check-opt"><input type="checkbox" id="recCritOther"><label for="recCritOther">Other:</label><input type="text" class="other-input" id="recCritOtherText" placeholder=""></div>
-        </div>
-        <div class="field-error">Please select at least one criteria.</div>
-      </div>
-
-      <div class="q-card" id="qRecFocus">
-        <label class="q-label">What is the enablement focus area? <span class="req">*</span></label>
-        <div class="check-list">
-          <div class="check-opt"><input type="checkbox" id="recFocProd"><label for="recFocProd">Product Knowledge</label></div>
-          <div class="check-opt"><input type="checkbox" id="recFocSales"><label for="recFocSales">Sales Skills</label></div>
-          <div class="check-opt"><input type="checkbox" id="recFocProc"><label for="recFocProc">Sales Process</label></div>
-          <div class="check-opt"><input type="checkbox" id="recFocPart"><label for="recFocPart">Partner Selling</label></div>
-          <div class="check-opt"><input type="checkbox" id="recFocOther"><label for="recFocOther">Other:</label><input type="text" class="other-input" id="recFocOtherText" placeholder=""></div>
-        </div>
-        <div class="field-error">Please select at least one focus area.</div>
-      </div>
-
-      <div class="q-card" id="qRecWhy">
-        <label class="q-label">Why is this training important, i.e. motivate why sellers need to attend? <span class="req">*</span></label>
-        <textarea id="recWhy" placeholder="Your answer"></textarea>
-        <div class="field-error">Please provide a reason.</div>
-      </div>
-
-      <div class="q-card" id="qRecSummary">
-        <label class="q-label">Please include a training summary that will populate the event description. <span class="req">*</span></label>
-        <textarea id="recSummary" placeholder="Your answer"></textarea>
-        <div class="field-error">Please provide a summary.</div>
-      </div>
-
-      <div class="q-card" id="qRecNewRef">
-        <label class="q-label">Is this training new or a refresher? <span class="req">*</span></label>
-        <div class="radio-list">
-          <div class="radio-opt"><input type="radio" name="recNewRef" id="recNew" value="New"><label for="recNew">New</label></div>
-          <div class="radio-opt"><input type="radio" name="recNewRef" id="recRefresher" value="Refresher"><label for="recRefresher">Refresher</label></div>
-        </div>
-        <div class="field-error">Please select one.</div>
-      </div>
-
-      <div class="q-card" id="qRecAudience">
-        <label class="q-label">Who all should be enrolled in this training (select multiple if required)? <span class="req">*</span></label>
-        <div class="check-list">
-          <div class="check-opt"><input type="checkbox" id="recAudSales"><label for="recAudSales">Sales Group (all 250 members of email alias salesgrp@acquia)</label></div>
-          <div class="check-opt"><input type="checkbox" id="recAudPresales"><label for="recAudPresales">Presales</label></div>
-          <div class="check-opt"><input type="checkbox" id="recAudCSMs"><label for="recAudCSMs">CSMs</label></div>
-          <div class="check-opt"><input type="checkbox" id="recAudAMs"><label for="recAudAMs">AMs</label></div>
-          <div class="check-opt"><input type="checkbox" id="recAudAEs"><label for="recAudAEs">AEs</label></div>
-          <div class="check-opt"><input type="checkbox" id="recAudBDRs"><label for="recAudBDRs">BDRs</label></div>
-          <div class="check-opt"><input type="checkbox" id="recAudTAMs"><label for="recAudTAMs">TAMs</label></div>
-          <div class="check-opt"><input type="checkbox" id="recAudOther"><label for="recAudOther">Other:</label><input type="text" class="other-input" id="recAudOtherText" placeholder=""></div>
-        </div>
-        <div class="field-error">Please select at least one audience.</div>
-      </div>
-
-      <div class="q-card" id="qRecUrgency">
-        <label class="q-label">How soon will reps benefit from this enablement? <span class="req">*</span></label>
-        <div class="radio-list">
-          <div class="radio-opt"><input type="radio" name="recUrgency" id="recUrgY" value="Yesterday"><label for="recUrgY">Yesterday: this information is already live, and reps need to catch up.</label></div>
-          <div class="radio-opt"><input type="radio" name="recUrgency" id="recUrgN" value="Right now"><label for="recUrgN">Right now: reps can use this information immediately</label></div>
-          <div class="radio-opt"><input type="radio" name="recUrgency" id="recUrg01" value="0-1 month"><label for="recUrg01">0 - 1 month: reps will use this in some opportunities in the coming weeks</label></div>
-          <div class="radio-opt"><input type="radio" name="recUrgency" id="recUrg1p" value="1 month+"><label for="recUrg1p">1 month or more: information prepares reps for future activities</label></div>
-        </div>
-        <div class="field-error">Please select urgency.</div>
-      </div>
-
-      <div class="q-card">
-        <label class="q-label">Please list all individuals participating in the session recording and deck creation? <span class="req">*</span></label>
-        <input type="text" id="recPeople" placeholder="Your answer">
-      </div>
-
-    </div><!-- /section-body -->
-
-    <div class="nav-bar">
-      <button class="btn-back" onclick="goPage1()">Back</button>
-      <button class="btn-submit" onclick="submitForm()">Submit</button>
-    </div>
-  </div><!-- /page2Recorded -->
-
-  <!-- PAGE 2B — LIVE -->
-  <div id="page2Live" style="display:none">
-    <div class="section-banner">
-      <h2>Live Enablement Session</h2>
-      <p>Best for sales skills, competitor updates, value selling, and live Q&A. Offers interactive, instructor-led learning.</p>
-    </div>
-    <div class="section-body">
-
-      <div class="q-card" id="qLivTitle">
-        <label class="q-label">What is the title of this training? <span class="req">*</span></label>
-        <input type="text" id="livTitle" placeholder="Your answer">
-        <div class="field-error">Please provide a title.</div>
-      </div>
-
-      <div class="q-card" id="qLivCriteria">
-        <label class="q-label">What productivity criteria does this training meet? <span class="req">*</span></label>
-        <div class="check-list">
-          <div class="check-opt"><input type="checkbox" id="livCritDeal"><label for="livCritDeal">Deal Value</label></div>
-          <div class="check-opt"><input type="checkbox" id="livCritWin"><label for="livCritWin">Win Rate</label></div>
-          <div class="check-opt"><input type="checkbox" id="livCritConv"><label for="livCritConv">Conversion Rate</label></div>
-          <div class="check-opt"><input type="checkbox" id="livCritPipe"><label for="livCritPipe">Pipeline Generation</label></div>
-          <div class="check-opt"><input type="checkbox" id="livCritOther"><label for="livCritOther">Other:</label><input type="text" class="other-input" id="livCritOtherText" placeholder=""></div>
-        </div>
-        <div class="field-error">Please select at least one criteria.</div>
-      </div>
-
-      <div class="q-card" id="qLivFocus">
-        <label class="q-label">What is the enablement focus area? <span class="req">*</span></label>
-        <div class="check-list">
-          <div class="check-opt"><input type="checkbox" id="livFocProd"><label for="livFocProd">Product Knowledge</label></div>
-          <div class="check-opt"><input type="checkbox" id="livFocSales"><label for="livFocSales">Sales Skills</label></div>
-          <div class="check-opt"><input type="checkbox" id="livFocProc"><label for="livFocProc">Sales Process</label></div>
-          <div class="check-opt"><input type="checkbox" id="livFocPart"><label for="livFocPart">Partner Selling</label></div>
-          <div class="check-opt"><input type="checkbox" id="livFocOther"><label for="livFocOther">Other:</label><input type="text" class="other-input" id="livFocOtherText" placeholder=""></div>
-        </div>
-        <div class="field-error">Please select at least one focus area.</div>
-      </div>
-
-      <div class="q-card" id="qLivSummary">
-        <label class="q-label">Please include a training summary that will populate the event description. <span class="req">*</span></label>
-        <textarea id="livSummary" placeholder="Your answer"></textarea>
-        <div class="field-error">Please provide a summary.</div>
-      </div>
-
-      <div class="q-card" id="qLivNewRef">
-        <label class="q-label">Is this training new or a refresher? <span class="req">*</span></label>
-        <div class="radio-list">
-          <div class="radio-opt"><input type="radio" name="livNewRef" id="livNew" value="New"><label for="livNew">New</label></div>
-          <div class="radio-opt"><input type="radio" name="livNewRef" id="livRefresher" value="Refresher"><label for="livRefresher">Refresher</label></div>
-        </div>
-        <div class="field-error">Please select one.</div>
-      </div>
-
-      <div class="q-card" id="qLivAudience">
-        <label class="q-label">Who should we invite to this session (select multiple if required)? <span class="req">*</span></label>
-        <div class="check-list">
-          <div class="check-opt"><input type="checkbox" id="livAudSales"><label for="livAudSales">Sales Group (all 250 members of email alias salesgrp@acquia)</label></div>
-          <div class="check-opt"><input type="checkbox" id="livAudPresales"><label for="livAudPresales">Presales</label></div>
-          <div class="check-opt"><input type="checkbox" id="livAudCSMs"><label for="livAudCSMs">CSMs</label></div>
-          <div class="check-opt"><input type="checkbox" id="livAudAMs"><label for="livAudAMs">AMs</label></div>
-          <div class="check-opt"><input type="checkbox" id="livAudAEs"><label for="livAudAEs">AEs</label></div>
-          <div class="check-opt"><input type="checkbox" id="livAudBDRs"><label for="livAudBDRs">BDRs</label></div>
-          <div class="check-opt"><input type="checkbox" id="livAudTAMs"><label for="livAudTAMs">TAMs</label></div>
-          <div class="check-opt"><input type="checkbox" id="livAudOther"><label for="livAudOther">Other:</label><input type="text" class="other-input" id="livAudOtherText" placeholder=""></div>
-        </div>
-        <div class="field-error">Please select at least one audience.</div>
-      </div>
-
-      <div class="q-card" id="qLivUrgency">
-        <label class="q-label">How soon will reps benefit from this enablement? <span class="req">*</span></label>
-        <div class="radio-list">
-          <div class="radio-opt"><input type="radio" name="livUrgency" id="livUrgY" value="Yesterday"><label for="livUrgY">Yesterday: this information is already live, and reps need to catch up.</label></div>
-          <div class="radio-opt"><input type="radio" name="livUrgency" id="livUrgN" value="Right now"><label for="livUrgN">Right now: reps can use this information immediately</label></div>
-          <div class="radio-opt"><input type="radio" name="livUrgency" id="livUrg01" value="0-1 month"><label for="livUrg01">0 - 1 month: reps will use this in some opportunities in the coming weeks</label></div>
-          <div class="radio-opt"><input type="radio" name="livUrgency" id="livUrg1p" value="1 month+"><label for="livUrg1p">1 month or more: information prepares reps for future activities</label></div>
-        </div>
-        <div class="field-error">Please select urgency.</div>
-      </div>
-
-      <div class="q-card">
-        <label class="q-label">Please list all individuals presenting during this live session and deck creation? <span class="req">*</span></label>
-        <input type="text" id="livPresenters" placeholder="Your answer">
-      </div>
-
-      <div class="q-card">
-        <label class="q-label">Who else must be present? (Please be specific, as your answer will be used for scheduling.)</label>
-        <input type="text" id="livOthers" placeholder="Your answer">
-      </div>
-
-    </div><!-- /section-body -->
-
-    <div class="nav-bar">
-      <button class="btn-back" onclick="goPage1()">Back</button>
-      <button class="btn-submit" onclick="submitForm()">Submit</button>
-    </div>
-  </div><!-- /page2Live -->
-
-  <!-- PAGE 2C — TASK -->
-  <div id="page2Task" style="display:none">
-    <div class="section-banner">
-      <h2>Task request</h2>
-      <p>For specific enablement needs such as sales assets, process documentation, or resource updates. Offers support through tailored deliverables.</p>
-    </div>
-    <div class="section-body">
-
-      <div class="q-card" id="qTskAudience">
-        <label class="q-label">The teams you are trying to reach with this information: <span class="req">*</span></label>
-        <div class="check-list">
-          <div class="check-opt"><input type="checkbox" id="tskAudSales"><label for="tskAudSales">Sales Group (all 250 members of email alias salesgrp@acquia)</label></div>
-          <div class="check-opt"><input type="checkbox" id="tskAudPresales"><label for="tskAudPresales">Presales</label></div>
-          <div class="check-opt"><input type="checkbox" id="tskAudCSMs"><label for="tskAudCSMs">CSMs</label></div>
-          <div class="check-opt"><input type="checkbox" id="tskAudAMs"><label for="tskAudAMs">AMs</label></div>
-          <div class="check-opt"><input type="checkbox" id="tskAudTAMs"><label for="tskAudTAMs">TAMs</label></div>
-          <div class="check-opt"><input type="checkbox" id="tskAudAEs"><label for="tskAudAEs">AEs</label></div>
-          <div class="check-opt"><input type="checkbox" id="tskAudBDRs"><label for="tskAudBDRs">BDRs</label></div>
-          <div class="check-opt"><input type="checkbox" id="tskAudOther"><label for="tskAudOther">Other:</label><input type="text" class="other-input" id="tskAudOtherText" placeholder=""></div>
-        </div>
-        <div class="field-error">Please select at least one team.</div>
-      </div>
-
-      <div class="q-card" id="qTskDesc">
-        <label class="q-label">Please Describe the Request <span class="req">*</span></label>
-        <textarea id="tskDesc" placeholder="Your answer"></textarea>
-        <div class="field-error">Please describe the request.</div>
-      </div>
-
-      <div class="q-card">
-        <label class="q-label">Any pre-work that needs to be done? <span class="req">*</span></label>
-        <input type="text" id="tskPrework" placeholder="Your answer">
-      </div>
-
-      <div class="q-card">
-        <label class="q-label">Important Dates / Additional Details / Key Takeaways <span class="req">*</span></label>
-        <input type="text" id="tskDates" placeholder="Your answer">
-      </div>
-
-      <div class="q-card">
-        <label class="q-label">Please link to the folder of any Supporting Documents</label>
-        <input type="text" id="tskDocs" placeholder="Your answer">
-      </div>
-
-    </div><!-- /section-body -->
-
-    <div class="nav-bar">
-      <button class="btn-back" onclick="goPage1()">Back</button>
-      <button class="btn-submit" onclick="submitForm()">Submit</button>
-    </div>
-  </div><!-- /page2Task -->
-
-  <!-- SUCCESS -->
-  <div class="success-screen" id="successScreen">
-    <div class="success-check">✓</div>
-    <h2>Your response has been recorded.</h2>
-    <div class="intake-id-badge" id="successId">SE-20260619-001</div>
-    <p>A copy of your response has been emailed to you. Our enablement team will review your submission and contact you shortly.</p>
-    <button class="btn-another" onclick="resetForm()">Submit another response</button>
-  </div>
-
-</div><!-- /page -->
+</div>
 
 <script>
 const APPS_SCRIPT_URL = "YOUR_APPS_SCRIPT_WEB_APP_URL";
+let selectedType = null;
+
+// ── TYPE SELECTION ────────────────────────────────────────────
+function selectType(type) {
+  selectedType = type;
+  ["Recorded","Live","Task"].forEach(t => {
+    document.getElementById("tc"+t).classList.toggle("selected", t === type);
+    const radio = document.querySelector("#tc"+t+" input[type=radio]");
+    if (radio) radio.checked = (t === type);
+  });
+  document.getElementById("fgType").classList.remove("has-error");
+}
+
+// ── PILL TOGGLES ──────────────────────────────────────────────
+function togglePill(label) {
+  const cb = label.querySelector("input[type=checkbox]");
+  if (!cb) return;
+  setTimeout(() => { label.classList.toggle("checked", cb.checked); }, 0);
+}
+
+function toggleRadioPill(label, name) {
+  document.querySelectorAll("input[name='"+name+"']").forEach(r => {
+    const lbl = r.closest(".pill-opt");
+    if (lbl) lbl.classList.remove("checked");
+  });
+  const radio = label.querySelector("input[type=radio]");
+  if (radio) {
+    setTimeout(() => { label.classList.toggle("checked", radio.checked); }, 0);
+  }
+}
 
 // ── NAVIGATION ────────────────────────────────────────────────
 function goPage1() {
   hide("page2Recorded"); hide("page2Live"); hide("page2Task");
   show("page1");
   setProgress(33);
+  window.scrollTo(0,0);
 }
 
 function goPage2() {
-  // Validate page 1
-  let valid = true;
   const email = val("inputEmail");
-  const type  = getRadio("type");
-  setErr("qEmail",  !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/));
-  setErr("qType",   !type);
-  if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) || !type) return;
-
+  let valid = true;
+  setFgErr("fgEmail", !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/));
+  if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) valid = false;
+  setFgErr("fgType", !selectedType);
+  if (!selectedType) valid = false;
+  if (!valid) return;
   hide("page1");
-  if (type === "Recorded") { show("page2Recorded"); }
-  else if (type === "Live") { show("page2Live"); }
-  else { show("page2Task"); }
+  if (selectedType === "Recorded") show("page2Recorded");
+  else if (selectedType === "Live") show("page2Live");
+  else show("page2Task");
   setProgress(66);
-  window.scrollTo(0, 0);
+  window.scrollTo(0,0);
 }
 
 // ── SUBMIT ────────────────────────────────────────────────────
 function submitForm() {
-  const type = getRadio("type");
-  let valid  = true;
+  let valid = true;
+  const type = selectedType;
 
   if (type === "Recorded") {
-    if (!val("recTitle"))               { setErr("qRecTitle", true);    valid = false; } else setErr("qRecTitle", false);
-    if (!getChecked("recCrit").length)  { setErr("qRecCriteria", true); valid = false; } else setErr("qRecCriteria", false);
-    if (!getChecked("recFoc").length)   { setErr("qRecFocus", true);    valid = false; } else setErr("qRecFocus", false);
-    if (!val("recWhy"))                 { setErr("qRecWhy", true);      valid = false; } else setErr("qRecWhy", false);
-    if (!val("recSummary"))             { setErr("qRecSummary", true);  valid = false; } else setErr("qRecSummary", false);
-    if (!getRadio("recNewRef"))         { setErr("qRecNewRef", true);   valid = false; } else setErr("qRecNewRef", false);
-    if (!getChecked("recAud").length)   { setErr("qRecAudience", true); valid = false; } else setErr("qRecAudience", false);
-    if (!getRadio("recUrgency"))        { setErr("qRecUrgency", true);  valid = false; } else setErr("qRecUrgency", false);
+    if (!val("recTitle"))                 { setFgErr("fgRecTitle",true);    valid=false; } else setFgErr("fgRecTitle",false);
+    if (!getChecked("recCrit").length)    { setFgErr("fgRecCriteria",true); valid=false; } else setFgErr("fgRecCriteria",false);
+    if (!getChecked("recFoc").length)     { setFgErr("fgRecFocus",true);    valid=false; } else setFgErr("fgRecFocus",false);
+    if (!val("recWhy"))                   { setFgErr("fgRecWhy",true);      valid=false; } else setFgErr("fgRecWhy",false);
+    if (!val("recSummary"))               { setFgErr("fgRecSummary",true);  valid=false; } else setFgErr("fgRecSummary",false);
+    if (!getRadio("recNewRef"))           { setFgErr("fgRecNewRef",true);   valid=false; } else setFgErr("fgRecNewRef",false);
+    if (!getChecked("recAud").length)     { setFgErr("fgRecAudience",true); valid=false; } else setFgErr("fgRecAudience",false);
+    if (!getRadio("recUrgency"))          { setFgErr("fgRecUrgency",true);  valid=false; } else setFgErr("fgRecUrgency",false);
   } else if (type === "Live") {
-    if (!val("livTitle"))               { setErr("qLivTitle", true);    valid = false; } else setErr("qLivTitle", false);
-    if (!getChecked("livCrit").length)  { setErr("qLivCriteria", true); valid = false; } else setErr("qLivCriteria", false);
-    if (!getChecked("livFoc").length)   { setErr("qLivFocus", true);    valid = false; } else setErr("qLivFocus", false);
-    if (!val("livSummary"))             { setErr("qLivSummary", true);  valid = false; } else setErr("qLivSummary", false);
-    if (!getRadio("livNewRef"))         { setErr("qLivNewRef", true);   valid = false; } else setErr("qLivNewRef", false);
-    if (!getChecked("livAud").length)   { setErr("qLivAudience", true); valid = false; } else setErr("qLivAudience", false);
-    if (!getRadio("livUrgency"))        { setErr("qLivUrgency", true);  valid = false; } else setErr("qLivUrgency", false);
+    if (!val("livTitle"))                 { setFgErr("fgLivTitle",true);    valid=false; } else setFgErr("fgLivTitle",false);
+    if (!getChecked("livCrit").length)    { setFgErr("fgLivCriteria",true); valid=false; } else setFgErr("fgLivCriteria",false);
+    if (!getChecked("livFoc").length)     { setFgErr("fgLivFocus",true);    valid=false; } else setFgErr("fgLivFocus",false);
+    if (!val("livSummary"))               { setFgErr("fgLivSummary",true);  valid=false; } else setFgErr("fgLivSummary",false);
+    if (!getRadio("livNewRef"))           { setFgErr("fgLivNewRef",true);   valid=false; } else setFgErr("fgLivNewRef",false);
+    if (!getChecked("livAud").length)     { setFgErr("fgLivAudience",true); valid=false; } else setFgErr("fgLivAudience",false);
+    if (!getRadio("livUrgency"))          { setFgErr("fgLivUrgency",true);  valid=false; } else setFgErr("fgLivUrgency",false);
   } else {
-    if (!getChecked("tskAud").length)   { setErr("qTskAudience", true); valid = false; } else setErr("qTskAudience", false);
-    if (!val("tskDesc"))                { setErr("qTskDesc", true);     valid = false; } else setErr("qTskDesc", false);
+    if (!getChecked("tskAud").length)     { setFgErr("fgTskAudience",true); valid=false; } else setFgErr("fgTskAudience",false);
+    if (!val("tskDesc"))                  { setFgErr("fgTskDesc",true);     valid=false; } else setFgErr("fgTskDesc",false);
   }
-
   if (!valid) return;
 
-  const now  = new Date();
-  const pad  = n => String(n).padStart(2, "0");
-  const date = now.getFullYear() + "" + pad(now.getMonth()+1) + "" + pad(now.getDate());
-  const id   = "SE-" + date + "-" + String(Math.floor(Math.random()*900)+100);
+  const now = new Date();
+  const pad = n => String(n).padStart(2,"0");
+  const id  = "SE-"+now.getFullYear()+pad(now.getMonth()+1)+pad(now.getDate())+"-"+String(Math.floor(Math.random()*900)+100);
+
+  const audience = type==="Recorded" ? getChecked("recAud").join(", ") : type==="Live" ? getChecked("livAud").join(", ") : getChecked("tskAud").join(", ");
+  const urgency  = type==="Recorded" ? getRadio("recUrgency") : type==="Live" ? getRadio("livUrgency") : "0-1 month";
 
   const payload = {
-    source:   "portal",
-    id:       id,
-    email:    val("inputEmail"),
-    type:     type,
-    title:    type === "Recorded" ? val("recTitle") : type === "Live" ? val("livTitle") : "Task Request",
-    audience: type === "Recorded" ? getChecked("recAud").join(", ") : type === "Live" ? getChecked("livAud").join(", ") : getChecked("tskAud").join(", "),
-    urgency:  type === "Recorded" ? getRadio("recUrgency") : type === "Live" ? getRadio("livUrgency") : "0-1 month",
-    summary:  type === "Recorded" ? val("recSummary") : type === "Live" ? val("livSummary") : val("tskDesc"),
-    criteria: type === "Recorded" ? getChecked("recCrit").join(", ") : getChecked("livCrit").join(", "),
-    focus:    type === "Recorded" ? getChecked("recFoc").join(", ")  : getChecked("livFoc").join(", "),
-    newRef:   type === "Recorded" ? getRadio("recNewRef") : getRadio("livNewRef"),
-    people:   type === "Recorded" ? val("recPeople") : val("livPresenters"),
-    why:      type === "Recorded" ? val("recWhy") : "",
-    others:   type === "Live"     ? val("livOthers") : "",
-    prework:  type === "Task"     ? val("tskPrework") : "",
-    dates:    type === "Task"     ? val("tskDates") : "",
-    docs:     type === "Task"     ? val("tskDocs") : ""
+    source:"portal", id, email:val("inputEmail"), type,
+    title:    type==="Recorded" ? val("recTitle") : type==="Live" ? val("livTitle") : "Task Request",
+    audience, urgency,
+    summary:  type==="Recorded" ? val("recSummary") : type==="Live" ? val("livSummary") : val("tskDesc"),
+    criteria: type==="Recorded" ? getChecked("recCrit").join(", ") : getChecked("livCrit").join(", "),
+    focus:    type==="Recorded" ? getChecked("recFoc").join(", ")  : getChecked("livFoc").join(", "),
+    newRef:   type==="Recorded" ? getRadio("recNewRef") : getRadio("livNewRef"),
+    people:   type==="Recorded" ? val("recPeople") : val("livPresenters"),
+    why:      type==="Recorded" ? val("recWhy") : "",
+    others:   type==="Live"     ? val("livOthers") : "",
+    prework:  type==="Task"     ? val("tskPrework") : "",
+    dates:    type==="Task"     ? val("tskDates") : "",
+    docs:     type==="Task"     ? val("tskDocs") : ""
   };
 
   if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== "YOUR_APPS_SCRIPT_WEB_APP_URL") {
-    fetch(APPS_SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(payload) });
+    fetch(APPS_SCRIPT_URL, { method:"POST", mode:"no-cors", body:JSON.stringify(payload) });
   }
+
+  // Populate success screen
+  document.getElementById("successId").textContent      = id;
+  document.getElementById("successType").textContent    = type;
+  document.getElementById("successUrgency").textContent = urgency || "—";
+  document.getElementById("successAudience").textContent = audience.split(",")[0] + (audience.split(",").length > 1 ? " +" + (audience.split(",").length-1) + " more" : "");
 
   setProgress(100);
   hide("page2Recorded"); hide("page2Live"); hide("page2Task");
-  document.getElementById("successId").textContent = id;
   show("successScreen");
-  window.scrollTo(0, 0);
+  window.scrollTo(0,0);
 }
 
 function resetForm() {
-  document.querySelectorAll("input[type=text], input[type=email], textarea").forEach(el => el.value = "");
-  document.querySelectorAll("input[type=radio], input[type=checkbox]").forEach(el => el.checked = false);
-  hide("successScreen");
-  show("page1");
-  setProgress(33);
-  window.scrollTo(0, 0);
+  document.querySelectorAll("input[type=text],input[type=email],textarea").forEach(el => el.value="");
+  document.querySelectorAll("input[type=radio],input[type=checkbox]").forEach(el => el.checked=false);
+  document.querySelectorAll(".pill-opt").forEach(el => el.classList.remove("checked"));
+  document.querySelectorAll(".type-card").forEach(el => el.classList.remove("selected"));
+  selectedType = null;
+  hide("successScreen"); show("page1");
+  setProgress(33); window.scrollTo(0,0);
 }
 
 // ── HELPERS ───────────────────────────────────────────────────
-function val(id)       { return (document.getElementById(id)?.value || "").trim(); }
-function show(id)      { document.getElementById(id).style.display = "block"; }
-function hide(id)      { document.getElementById(id).style.display = "none"; }
-function setErr(id, e) { document.getElementById(id)?.classList.toggle("has-error", e); }
-function setProgress(pct) { document.getElementById("progressFill").style.width = pct + "%"; }
-
-function getRadio(name) {
-  const el = document.querySelector("input[name='" + name + "']:checked");
-  return el ? el.value : "";
-}
-
+function val(id)         { return (document.getElementById(id)?.value||"").trim(); }
+function show(id)        { document.getElementById(id).style.display="block"; }
+function hide(id)        { document.getElementById(id).style.display="none"; }
+function setProgress(p)  { document.getElementById("progressFill").style.width=p+"%"; }
+function setFgErr(id, e) { document.getElementById(id)?.classList.toggle("has-error", e); }
+function getRadio(name)  { const el=document.querySelector("input[name='"+name+"']:checked"); return el?el.value:""; }
 function getChecked(prefix) {
-  const results = [];
-  document.querySelectorAll("input[type=checkbox][id^='" + prefix + "']").forEach(cb => {
-    if (!cb.checked) return;
-    if (cb.id.endsWith("Other")) {
-      const otherText = document.getElementById(cb.id + "Text")?.value.trim();
-      if (otherText) results.push(otherText);
-    } else {
-      results.push(cb.nextElementSibling?.textContent.trim() || cb.id);
-    }
+  const res=[];
+  document.querySelectorAll("input[type=checkbox][id^='"+prefix+"']:checked").forEach(cb=>{
+    res.push(cb.closest(".pill-opt")?.querySelector(".pill-text")?.textContent.trim()||cb.id);
   });
-  return results;
+  return res;
 }
 </script>
 </body>
